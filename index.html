@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIWII STORE - Tu Tienda Gamer de Confianza</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="Logo.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        kiwi: {
+                            red: '#ff1e27',
+                            darkred: '#800000',
+                            gold: '#ffb703',
+                            blue: '#00d4ff',
+                            dark: '#08080a',
+                            card: '#101216',
+                            border: '#1f2430'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #08080a;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* FONDO ANIMADO MEJORADO */
+        .animated-bg {
+            position: relative;
+        }
+        .animated-bg::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 200%; height: 200%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 0),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 0);
+            background-size: 30px 30px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ORBES FLOTANTES DE FONDO */
+        @keyframes orbMove1 {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+            50% { transform: translate(5vw, 5vh) scale(1.2); opacity: 0.7; }
+        }
+        @keyframes orbMove2 {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            50% { transform: translate(-8vw, -8vh) scale(0.9); opacity: 0.6; }
+        }
+        .animate-orb1 { animation: orbMove1 12s infinite ease-in-out; }
+        .animate-orb2 { animation: orbMove2 18s infinite ease-in-out; }
+
+        .glow-red { box-shadow: 0 0 25px rgba(255, 30, 39, 0.4); }
+        .text-glow-red { text-shadow: 0 0 12px rgba(255, 30, 39, 0.8); }
+        
+        /* ANIMACIONES ORIGINALES */
+        .kiwi-float { animation: kiwiBounce 3s ease-in-out infinite; }
+        @keyframes kiwiBounce {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(3deg); }
+        }
+
+        /* ANIMACIONES SUAVIZADAS (NAVBAR) */
+        .kiwi-float-subtle { animation: kiwiBounceSubtle 4s ease-in-out infinite; }
+        @keyframes kiwiBounceSubtle {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-4px); }
+        }
+        .text-float-subtle { animation: textPulseSubtle 4s ease-in-out infinite; }
+        @keyframes textPulseSubtle {
+            0%, 100% { transform: translateY(0px); text-shadow: 0 0 5px rgba(255, 30, 39, 0.2); }
+            50% { transform: translateY(-2px); text-shadow: 0 0 15px rgba(255, 30, 39, 0.7); }
+        }
+
+        .cat-card:hover {
+            border-color: #ff1e27;
+            background-color: rgba(255, 30, 39, 0.1);
+            box-shadow: 0 0 20px rgba(255, 30, 39, 0.2);
+            transform: scale(1.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #3f4758; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #ff1e27; }
+
+        /* EFECTO REVEAL (SCROLL) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="animated-bg min-h-screen flex flex-col justify-between relative z-10 overflow-hidden">
+
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-kiwi-red/10 rounded-full blur-[120px] animate-orb1"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-[#5c0005]/20 rounded-full blur-[150px] animate-orb2"></div>
+    </div>
+
+    <div id="page-loader" class="fixed inset-0 bg-kiwi-dark z-[200] flex flex-col items-center justify-center transition-opacity duration-700">
+        <img src="Logo.jpg" alt="Cargando..." class="w-28 h-28 rounded-full border-4 border-kiwi-red shadow-[0_0_25px_#ff1e27] animate-pulse mb-6 object-cover">
+        <div class="flex items-center gap-2 mb-2">
+            <div class="w-3 h-3 bg-kiwi-red rounded-full animate-bounce"></div>
+            <div class="w-3 h-3 bg-kiwi-red rounded-full animate-bounce" style="animation-delay: 0.1s;"></div>
+            <div class="w-3 h-3 bg-kiwi-red rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+        </div>
+        <h2 class="font-orbitron font-bold text-white tracking-widest text-sm text-glow-red">CARGANDO TIENDA...</h2>
+    </div>
+
+    <div id="welcome-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-500 hidden opacity-0">
+        <div class="bg-kiwi-card border border-kiwi-red w-full max-w-lg rounded-3xl p-8 relative shadow-[0_0_50px_rgba(255,30,39,0.3)] text-center transform scale-95 transition-transform duration-500">
+            <img src="Logo2.jpg" alt="Kiwii Store Logo" class="w-32 h-32 mx-auto mb-4 rounded-full border-4 border-kiwi-red shadow-lg kiwi-float object-cover">
+            <h2 class="font-orbitron text-3xl font-black text-white mb-2">¡BIENVENIDO A <span class="text-kiwi-red text-glow-red">KIWII STORE</span>!</h2>
+            <p class="text-gray-300 font-rajdhani text-lg mb-6">Tu aventura empieza aquí. Explora nuestro catálogo de Roblox, Free Fire, Streaming y más. Las mejores ofertas te están esperando.</p>
+            <button onclick="closeWelcomeModal()" class="bg-kiwi-red hover:bg-red-700 text-white font-orbitron font-bold py-3 px-8 rounded-xl transition shadow-lg glow-red text-lg w-full transform hover:scale-105">
+                ¡ENTRAR A LA TIENDA! <i class="fa-solid fa-rocket ml-2"></i>
+            </button>
+        </div>
+    </div>
+
+    <header class="sticky top-0 z-40 bg-kiwi-dark/95 backdrop-blur-md border-b border-kiwi-border">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between relative z-10">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="goBackToHome()">
+                <div class="relative w-12 h-12 rounded-full flex items-center justify-center kiwi-float-subtle overflow-hidden bg-kiwi-dark border border-kiwi-border shadow-[0_0_10px_rgba(255,30,39,0.2)] group-hover:border-kiwi-red transition-colors">
+                    <img src="Logo.jpg" alt="Kiwi Logo Animado" class="w-full h-full object-cover">
+                </div>
+                <div class="text-float-subtle">
+                    <h1 class="font-orbitron font-black text-2xl tracking-wider text-white flex items-center gap-1">
+                        KIWII <span class="text-kiwi-red text-glow-red">STORE</span>
+                    </h1>
+                    <p class="text-[10px] text-gray-400 font-rajdhani tracking-widest uppercase mt-[-2px]">TU TIENDA GAMER DE CONFIANZA</p>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-6 font-rajdhani font-bold text-base">
+                <button onclick="goBackToHome()" class="hover:text-kiwi-red transition">CATÁLOGO</button>
+                <button onclick="scrollToId('why-us')" class="hover:text-kiwi-red transition">¿POR QUÉ ELEGIRNOS?</button>
+                <button onclick="scrollToId('faq')" class="hover:text-kiwi-red transition">FAQ</button>
+                <button onclick="scrollToId('tutorials')" class="hover:text-kiwi-red transition">TUTORIALES</button>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <a href="https://wa.me/5491139172595?text=Hola%20Kiwi%20Store,%20tengo%20una%20consulta" target="_blank" class="bg-green-600 hover:bg-green-700 text-white p-2.5 rounded-xl transition flex items-center justify-center shadow-lg hover:scale-105" title="Atención WhatsApp">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                </a>
+                <button id="login-main-btn" onclick="openAuthModal()" class="bg-kiwi-red hover:bg-red-700 text-white font-rajdhani font-bold px-4 py-1.5 rounded-xl transition shadow-lg glow-red text-sm flex items-center gap-1 hover:scale-105">
+                    <i class="fa-solid fa-user"></i> <span id="user-display-name" class="hidden sm:inline">INICIAR SESIÓN</span>
+                </button>
+                <button onclick="toggleDrawer()" class="bg-kiwi-card border border-kiwi-border p-2.5 rounded-xl hover:border-kiwi-red transition text-white">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="side-drawer" class="fixed inset-y-0 right-0 w-80 bg-kiwi-card border-l border-kiwi-border z-50 transform translate-x-full transition-transform duration-300 p-6 flex flex-col justify-between overflow-y-auto">
+        <div>
+            <div class="flex items-center justify-between pb-4 border-b border-kiwi-border mb-6">
+                <h3 class="font-orbitron font-bold text-lg text-white flex items-center gap-2">
+                    <i class="fa-solid fa-compass text-kiwi-red"></i> MENÚ & COMUNIDADES
+                </h3>
+                <button onclick="toggleDrawer()" class="text-gray-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <h4 class="font-orbitron text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">NUESTRAS REDES</h4>
+            <div class="space-y-3 mb-6">
+                <a href="https://instagram.com/kiwiistore2026" target="_blank" class="flex items-center gap-3 bg-kiwi-dark p-3 rounded-lg border border-kiwi-border hover:border-kiwi-red transition text-gray-300 hover:text-white">
+                    <i class="fa-brands fa-instagram text-xl text-pink-500"></i> <span class="font-rajdhani font-bold">@kiwiistore2026</span>
+                </a>
+                <a href="https://discord.gg/d35QmtVBSW" target="_blank" class="flex items-center gap-3 bg-kiwi-dark p-3 rounded-lg border border-kiwi-border hover:border-kiwi-red transition text-gray-300 hover:text-white">
+                    <i class="fa-brands fa-discord text-xl text-[#5865F2]"></i> <span class="font-rajdhani font-bold">Servidor de Discord</span>
+                </a>
+            </div>
+
+            <h4 class="font-orbitron text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">GRUPOS OFICIALES DE ROBLOX</h4>
+            <div class="space-y-2 text-[11px] font-rajdhani font-bold overflow-y-auto max-h-56 pr-2 custom-scrollbar">
+                <a href="https://www.roblox.com/communities/35619576/ANIME-UGC-S-CREATOR#!/about" target="_blank" class="block bg-kiwi-dark p-2.5 rounded-lg border border-kiwi-border/60 hover:border-kiwi-red transition text-gray-300 hover:text-white truncate" title="ANIME UGC'S CREATOR">1. ANIME UGC'S CREATOR</a>
+                <a href="https://www.roblox.com/communities/34564860/Comunidad-Celestial-RBLX#!/about" target="_blank" class="block bg-kiwi-dark p-2.5 rounded-lg border border-kiwi-border/60 hover:border-kiwi-red transition text-gray-300 hover:text-white truncate" title="Comunidad Celestial RBLX">2. Comunidad Celestial RBLX</a>
+                <a href="https://www.roblox.com/communities/13080841/Gorra-Shop#!/about" target="_blank" class="block bg-kiwi-dark p-2.5 rounded-lg border border-kiwi-border/60 hover:border-kiwi-red transition text-gray-300 hover:text-white truncate" title="Gorra Shop">3. Gorra Shop</a>
+                <a href="https://www.roblox.com/communities/15119364/C#!/about" target="_blank" class="block bg-kiwi-dark p-2.5 rounded-lg border border-kiwi-border/60 hover:border-kiwi-red transition text-gray-300 hover:text-white truncate" title="C">4. C</a>
+                <a href="https://www.roblox.com/communities/33422152/nxtrnd#!/about" target="_blank" class="block bg-kiwi-dark p-2.5 rounded-lg border border-kiwi-border/60 hover:border-kiwi-red transition text-gray-300 hover:text-white truncate" title="nxtrnd">5. nxtrnd</a>
+                <a href="https://www.roblox.com/communities/33332820/Random-Island#!/about" target="_blank" class="block bg-kiwi-dark p-2.5 rounded-lg border border-kiwi-border/60 hover:border-kiwi-red transition text-gray-300 hover:text-white truncate" title="Random Island">6. Random Island</a>
+                <a href="https://www.roblox.com/communities/35816914/One-Ugc-man#!/about" target="_blank" class="block bg-kiwi-dark p-2.5 rounded-lg border border-kiwi-border/60 hover:border-kiwi-red transition text-gray-300 hover:text-white truncate" title="One Ugc man">7. One Ugc man</a>
+                <a href="https://www.roblox.com/communities/35826008/Really#!/about" target="_blank" class="block bg-kiwi-dark p-2.5 rounded-lg border border-kiwi-border/60 hover:border-kiwi-red transition text-gray-300 hover:text-white truncate" title="Really">8. Really</a>
+                <a href="https://www.roblox.com/communities/578297005/Anime-ugccs#!/about" target="_blank" class="block bg-kiwi-dark p-2.5 rounded-lg border border-kiwi-border/60 hover:border-kiwi-red transition text-gray-300 hover:text-white truncate" title="Anime ugccs">9. Anime ugccs</a>
+                <a href="https://www.roblox.com/communities/33707960/SeIfMade-Ent#!/about" target="_blank" class="block bg-kiwi-dark p-2.5 rounded-lg border border-kiwi-border/60 hover:border-kiwi-red transition text-gray-300 hover:text-white truncate" title="SeIfMade Ent">10. SeIfMade Ent</a>
+                <a href="https://www.roblox.com/communities/35399081/drowsing#!/about" target="_blank" class="block bg-kiwi-dark p-2.5 rounded-lg border border-kiwi-border/60 hover:border-kiwi-red transition text-gray-300 hover:text-white truncate" title="drowsing">11. drowsing</a>
+                <a href="https://www.roblox.com/communities/809551446/AnimeFACTORY1#!/about" target="_blank" class="block bg-kiwi-dark p-2.5 rounded-lg border border-kiwi-border/60 hover:border-kiwi-red transition text-gray-300 hover:text-white truncate" title="AnimeFACTORY1">12. AnimeFACTORY1</a>
+                <a href="https://www.roblox.com/communities/567256399/UGC-Bundle-Shop#!/about" target="_blank" class="block bg-kiwi-dark p-2.5 rounded-lg border border-kiwi-border/60 hover:border-kiwi-red transition text-gray-300 hover:text-white truncate" title="UGC Bundle Shop">13. UGC Bundle Shop</a>
+            </div>
+        </div>
+        <div class="pt-4 border-t border-kiwi-border text-center text-xs text-gray-500">
+            <p>KIWII STORE © 2026</p>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full relative z-10" id="catalog-section">
+
+        <div id="home-view">
+            <div class="reveal relative border border-kiwi-red/40 rounded-3xl mb-10 overflow-hidden flex flex-col md:flex-row items-center justify-between shadow-[0_0_30px_rgba(255,30,39,0.15)] min-h-[300px]">
+                <img src="Banner.jpg" alt="Kiwii Store Banner" class="absolute inset-0 w-full h-full object-cover opacity-50 z-0">
+                <div class="absolute inset-0 bg-gradient-to-r from-kiwi-dark/95 via-kiwi-card/70 to-transparent z-0"></div>
+                
+                <div class="z-10 relative p-8 w-full flex flex-col md:flex-row items-center justify-between h-full">
+                    <div class="max-w-xl">
+                        <span class="bg-kiwi-red text-white text-[11px] font-orbitron font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md inline-block mb-3">100% OFICIAL & SEGURO</span>
+                        <h2 class="font-orbitron text-4xl md:text-6xl font-black mb-2 leading-tight text-white drop-shadow-lg">
+                            RECARGAS GAMER Y <span class="text-kiwi-red text-glow-red">STREAMING</span>
+                        </h2>
+                        <p class="text-gray-200 font-rajdhani text-lg drop-shadow-md">
+                            Selecciona la categoría que buscas para abrir el catálogo completo. Entrega rápida con métodos de pago para Latam y Crypto.
+                        </p>
+                    </div>
+                    <div class="mt-8 md:mt-0 relative w-48 h-48 flex items-center justify-center kiwi-float hidden md:flex">
+                        <img src="Logo2.jpg" alt="Kiwi Mascota" class="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(255,30,39,0.4)] rounded-full">
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div onclick="filterCategory('roblox')" class="reveal cat-card cursor-pointer bg-kiwi-card border border-kiwi-border rounded-2xl p-4 flex flex-col items-center justify-center aspect-square transition duration-300" style="transition-delay: 0s;">
+                    <div class="w-16 h-16 mb-2 flex items-center justify-center bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-600">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg" class="w-10 h-10 brightness-0 invert" alt="Roblox">
+                    </div>
+                    <span class="font-orbitron font-bold text-center text-sm md:text-base text-white">ROBLOX</span>
+                    <span class="text-[10px] text-gray-400 font-rajdhani font-bold uppercase mt-1">& Blox Fruits</span>
+                </div>
+                
+                <div onclick="filterCategory('freefire')" class="reveal cat-card cursor-pointer bg-kiwi-card border border-kiwi-border rounded-2xl p-4 flex flex-col items-center justify-center aspect-square transition duration-300" style="transition-delay: 0.1s;">
+                    <div class="w-16 h-16 mb-2 flex items-center justify-center bg-orange-900/40 rounded-xl shadow-lg border border-orange-500/50 text-4xl">
+                        🔥
+                    </div>
+                    <span class="font-orbitron font-bold text-center text-sm md:text-base text-white mt-1">FREE FIRE</span>
+                    <span class="text-[10px] text-gray-400 font-rajdhani font-bold uppercase mt-1">Diamantes</span>
+                </div>
+                
+                <div onclick="filterCategory('streaming')" class="reveal cat-card cursor-pointer bg-kiwi-card border border-kiwi-border rounded-2xl p-4 flex flex-col items-center justify-center aspect-square transition duration-300" style="transition-delay: 0.2s;">
+                    <div class="w-16 h-16 mb-2 flex items-center justify-center bg-purple-900/40 rounded-xl shadow-lg border border-purple-500/50 text-3xl">
+                        <i class="fa-solid fa-tv text-purple-400"></i>
+                    </div>
+                    <span class="font-orbitron font-bold text-center text-sm md:text-base text-white mt-1">STREAMING</span>
+                    <span class="text-[10px] text-gray-400 font-rajdhani font-bold uppercase mt-1">Apps & IA</span>
+                </div>
+                
+                <div onclick="filterCategory('instagram')" class="reveal cat-card cursor-pointer bg-kiwi-card border border-kiwi-border rounded-2xl p-4 flex flex-col items-center justify-center aspect-square transition duration-300" style="transition-delay: 0.3s;">
+                    <div class="w-16 h-16 mb-2 flex items-center justify-center bg-pink-900/40 rounded-xl shadow-lg border border-pink-500/50 text-4xl">
+                        <i class="fa-brands fa-instagram text-pink-500"></i>
+                    </div>
+                    <span class="font-orbitron font-bold text-center text-sm md:text-base text-white mt-1 leading-tight">REDES<br>SOCIALES</span>
+                </div>
+            </div>
+
+            <section id="why-us" class="mt-20 pt-10 border-t border-kiwi-border overflow-hidden">
+                <h3 class="reveal font-orbitron text-2xl md:text-3xl font-black text-center mb-10">
+                    ¿POR QUÉ COMPRAR EN <span class="text-kiwi-red">KIWII STORE</span>?
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+                    <div class="reveal bg-kiwi-card p-6 rounded-2xl border border-kiwi-border hover:border-kiwi-red transition" style="transition-delay: 0s;">
+                        <i class="fa-solid fa-bolt text-4xl text-kiwi-red mb-4"></i>
+                        <h4 class="font-orbitron font-bold text-lg mb-2">ENTREGA INMEDIATA</h4>
+                        <p class="text-gray-400 text-sm">Procesamiento automatizado de tus recargas en cuestión de minutos.</p>
+                    </div>
+                    <div class="reveal bg-kiwi-card p-6 rounded-2xl border border-kiwi-border hover:border-kiwi-red transition" style="transition-delay: 0.1s;">
+                        <i class="fa-solid fa-shield-cat text-4xl text-kiwi-red mb-4"></i>
+                        <h4 class="font-orbitron font-bold text-lg mb-2">COMPRA 100% SEGURA</h4>
+                        <p class="text-gray-400 text-sm">Métodos de pago protegidos y cuentas garantizadas.</p>
+                    </div>
+                    <div class="reveal bg-kiwi-card p-6 rounded-2xl border border-kiwi-border hover:border-kiwi-red transition" style="transition-delay: 0.2s;">
+                        <i class="fa-solid fa-headset text-4xl text-kiwi-red mb-4"></i>
+                        <h4 class="font-orbitron font-bold text-lg mb-2">ATENCIÓN 24/7</h4>
+                        <p class="text-gray-400 text-sm">Soporte personalizado vía WhatsApp ante cualquier duda.</p>
+                    </div>
+                    <div class="reveal bg-kiwi-card p-6 rounded-2xl border border-kiwi-border hover:border-kiwi-red transition" style="transition-delay: 0.3s;">
+                        <i class="fa-solid fa-tags text-4xl text-kiwi-red mb-4"></i>
+                        <h4 class="font-orbitron font-bold text-lg mb-2">MEJORES PRECIOS</h4>
+                        <p class="text-gray-400 text-sm">Tarifas regionales competitivas actualizadas.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tutorials" class="mt-20 pt-10 border-t border-kiwi-border overflow-hidden">
+                <h3 class="reveal font-orbitron text-2xl md:text-3xl font-black text-center mb-10">
+                    <i class="fa-solid fa-graduation-cap text-kiwi-red"></i> GUÍAS Y TUTORIALES
+                </h3>
+                <p class="reveal text-center text-gray-400 mb-8 text-sm max-w-2xl mx-auto">¿Tienes dudas sobre cómo recibir tus productos? Revisa estas guías rápidas antes de comprar.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                    <div class="reveal bg-kiwi-card rounded-2xl p-6 border border-blue-500/30 hover:border-blue-500 transition shadow-lg" style="transition-delay: 0s;">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-blue-900/50 rounded-xl flex items-center justify-center text-2xl text-blue-400 border border-blue-500/50">
+                                🎫
+                            </div>
+                            <h4 class="font-orbitron font-bold text-lg text-white">Cómo recibir Robux por Gamepass</h4>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-300 font-rajdhani">
+                            <li class="flex gap-2"><i class="fa-solid fa-1 text-blue-400 mt-1"></i> Crea una experiencia o juego público en tu perfil de Roblox.</li>
+                            <li class="flex gap-2"><i class="fa-solid fa-2 text-blue-400 mt-1"></i> Entra a "Crear" en Roblox y añade un "Pase" (Gamepass) a ese juego.</li>
+                            <li class="flex gap-2"><i class="fa-solid fa-3 text-blue-400 mt-1"></i> Ponle al Gamepass el precio exacto que te indicaremos en WhatsApp (incluye los impuestos de Roblox).</li>
+                            <li class="flex gap-2"><i class="fa-solid fa-4 text-blue-400 mt-1"></i> Envíanos el link del Gamepass por WhatsApp. ¡Nosotros lo compramos y los Robux te llegarán en 5 a 7 días!</li>
+                        </ul>
+                    </div>
+
+                    <div class="reveal bg-kiwi-card rounded-2xl p-6 border border-orange-500/30 hover:border-orange-500 transition shadow-lg" style="transition-delay: 0.2s;">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-orange-900/50 rounded-xl flex items-center justify-center text-2xl text-orange-400 border border-orange-500/50">
+                                🔥
+                            </div>
+                            <h4 class="font-orbitron font-bold text-lg text-white">Recargas de Free Fire</h4>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-300 font-rajdhani">
+                            <li class="flex gap-2"><i class="fa-solid fa-1 text-orange-400 mt-1"></i> <strong>Recargas Ilimitadas:</strong> Se envían directo a tu ID de jugador. Puedes comprar cuantas veces quieras y llegan en minutos.</li>
+                            <li class="flex gap-2"><i class="fa-solid fa-2 text-orange-400 mt-1"></i> <strong>Ofertas Limitadas:</strong> Son promociones especiales súper baratas. ⚠️ <em>Solo puedes comprar 1 paquete limitado por cada ID de jugador en toda su historia.</em></li>
+                            <li class="flex gap-2"><i class="fa-solid fa-3 text-orange-400 mt-1"></i> Asegúrate de copiar bien tu número de ID (Ej: 123456789) desde tu perfil dentro del juego para evitar errores.</li>
+                        </ul>
+                    </div>
+
+                    <div class="reveal bg-kiwi-card rounded-2xl p-6 border border-purple-500/30 hover:border-purple-500 transition shadow-lg md:col-span-2" style="transition-delay: 0.1s;">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-purple-900/50 rounded-xl flex items-center justify-center text-2xl text-purple-400 border border-purple-500/50">
+                                🍎
+                            </div>
+                            <h4 class="font-orbitron font-bold text-lg text-white">Entrega de Frutas (Blox Fruits)</h4>
+                        </div>
+                        <p class="text-sm text-gray-300 font-rajdhani mb-3">La entrega es súper sencilla y directa. ¡Sin complicaciones!</p>
+                        <ul class="space-y-3 text-sm text-gray-300 font-rajdhani grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-1"></i> <strong>Sin requisitos:</strong> No necesitas estar en un mar específico ni dar frutas a cambio.</li>
+                            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-1"></i> <strong>Entrega Ultra Rápida:</strong> Tu fruta llegará a tu cuenta en un plazo de 2 a 15 minutos tras verificar el pago.</li>
+                            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-1"></i> <strong>Offline:</strong> No hace falta que estemos conectados al mismo tiempo ni en el mismo servidor.</li>
+                            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-1"></i> <strong>100% Seguro:</strong> El envío se realiza mediante sistemas de regalo oficiales del juego.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="faq" class="mt-20 pt-10 border-t border-kiwi-border overflow-hidden">
+                <h3 class="reveal font-orbitron text-2xl md:text-3xl font-black text-center mb-10">
+                    PREGUNTAS <span class="text-kiwi-red">FRECUENTES</span>
+                </h3>
+                <div class="max-w-3xl mx-auto space-y-4">
+                    <div class="reveal bg-kiwi-card border border-kiwi-border rounded-xl p-5 hover:border-kiwi-red/50 transition duration-300" style="transition-delay: 0s;">
+                        <h4 class="font-orbitron font-bold text-white flex items-center justify-between cursor-pointer group" onclick="toggleFaq(1)">
+                            <span class="group-hover:text-kiwi-red transition"><i class="fa-solid fa-clock mr-2 text-gray-500 group-hover:text-kiwi-red"></i> ¿Cuánto tarda en llegar mi recarga o cuenta?</span>
+                            <i class="fa-solid fa-chevron-down text-kiwi-red transform transition-transform duration-300" id="icon-faq-1"></i>
+                        </h4>
+                        <p id="faq-1" class="hidden text-gray-400 text-sm mt-3 pt-3 border-t border-kiwi-border/50 leading-relaxed">
+                            Los servicios de Streaming, Diamantes de Free Fire y entrega de Frutas en Blox Fruits se entregan de <strong>2 a 15 minutos</strong> tras verificar tu comprobante de pago por WhatsApp. Los Robux vía Gamepass demoran entre 5 a 7 días por políticas de Roblox.
+                        </p>
+                    </div>
+                    <div class="reveal bg-kiwi-card border border-kiwi-border rounded-xl p-5 hover:border-kiwi-red/50 transition duration-300" style="transition-delay: 0.1s;">
+                        <h4 class="font-orbitron font-bold text-white flex items-center justify-between cursor-pointer group" onclick="toggleFaq(2)">
+                            <span class="group-hover:text-kiwi-red transition"><i class="fa-solid fa-money-bill-transfer mr-2 text-gray-500 group-hover:text-kiwi-red"></i> ¿Cómo pago y confirmo mi compra?</span>
+                            <i class="fa-solid fa-chevron-down text-kiwi-red transform transition-transform duration-300" id="icon-faq-2"></i>
+                        </h4>
+                        <p id="faq-2" class="hidden text-gray-400 text-sm mt-3 pt-3 border-t border-kiwi-border/50 leading-relaxed">
+                            Es muy fácil. Al hacer clic en "Comprar Ahora", selecciona tu método de pago. El sistema te mostrará los datos de transferencia (ej: Alias de Mercado Pago: <code class="bg-black px-1 rounded text-white">Ivan.admin</code>). Haces la transferencia y luego haces clic en el botón verde para enviarnos el comprobante directamente a nuestro WhatsApp oficial.
+                        </p>
+                    </div>
+                    <div class="reveal bg-kiwi-card border border-kiwi-border rounded-xl p-5 hover:border-kiwi-red/50 transition duration-300" style="transition-delay: 0.2s;">
+                        <h4 class="font-orbitron font-bold text-white flex items-center justify-between cursor-pointer group" onclick="toggleFaq(3)">
+                            <span class="group-hover:text-kiwi-red transition"><i class="fa-solid fa-triangle-exclamation mr-2 text-gray-500 group-hover:text-kiwi-red"></i> ¿Qué pasa si me equivoco al escribir mi ID?</span>
+                            <i class="fa-solid fa-chevron-down text-kiwi-red transform transition-transform duration-300" id="icon-faq-3"></i>
+                        </h4>
+                        <p id="faq-3" class="hidden text-gray-400 text-sm mt-3 pt-3 border-t border-kiwi-border/50 leading-relaxed">
+                            Es de <strong>extrema importancia</strong> revisar cuidadosamente tus datos (ID, nombre de usuario o link) antes de enviar el mensaje. Si el pago y la entrega se procesan a un ID incorrecto que tú proporcionaste, lamentablemente no podremos emitir reembolsos ni revertir la transacción, ya que los sistemas de recarga son irreversibles.
+                        </p>
+                    </div>
+                    <div class="reveal bg-kiwi-card border border-kiwi-border rounded-xl p-5 hover:border-kiwi-red/50 transition duration-300" style="transition-delay: 0.3s;">
+                        <h4 class="font-orbitron font-bold text-white flex items-center justify-between cursor-pointer group" onclick="toggleFaq(4)">
+                            <span class="group-hover:text-kiwi-red transition"><i class="fa-solid fa-headset mr-2 text-gray-500 group-hover:text-kiwi-red"></i> ¿Cuáles son los horarios de atención?</span>
+                            <i class="fa-solid fa-chevron-down text-kiwi-red transform transition-transform duration-300" id="icon-faq-4"></i>
+                        </h4>
+                        <p id="faq-4" class="hidden text-gray-400 text-sm mt-3 pt-3 border-t border-kiwi-border/50 leading-relaxed">
+                            Nuestro equipo está disponible y respondiendo activamente en WhatsApp todos los días desde las <strong>10:00 AM hasta las 22:00 PM (Hora Argentina)</strong>. Puedes realizar compras fuera de este horario y dejarnos el comprobante, pero la entrega se procesará a primera hora del día siguiente.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="reviews" class="mt-20 pt-10 border-t border-kiwi-border overflow-hidden">
+                <h3 class="reveal font-orbitron text-2xl md:text-3xl font-black text-center mb-10">
+                    RESEÑAS DE <span class="text-[#5865F2]">DISCORD</span>
+                </h3>
+                <p class="reveal text-center text-gray-400 mb-8 text-sm max-w-2xl mx-auto">Lo que dicen nuestros clientes en tiempo real. ¡Únete a la comunidad para ver más o dejar tu opinión!</p>
+                
+                <div class="reveal max-w-4xl mx-auto bg-[#2B2D31] rounded-xl border border-[#1E1F22] overflow-hidden shadow-2xl h-[500px] relative">
+                    <widgetbot
+                        server="TU_SERVER_ID_AQUI"
+                        channel="TU_CHANNEL_ID_AQUI"
+                        width="100%"
+                        height="100%"
+                    ></widgetbot>
+                    <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-snippet"></script>
+                </div>
+
+                <div class="reveal mt-8 text-center">
+                    <a href="https://discord.gg/d35QmtVBSW" target="_blank" class="inline-flex items-center justify-center gap-2 bg-[#5865F2] hover:bg-[#4752C4] text-white font-rajdhani font-bold px-6 py-3 rounded-xl transition shadow-lg text-lg transform hover:scale-105">
+                        <i class="fa-brands fa-discord"></i> UNIRSE AL SERVIDOR
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <div id="category-view" class="hidden min-h-screen">
+            <button onclick="goBackToHome()" class="mb-6 bg-kiwi-dark hover:bg-kiwi-red border border-kiwi-border text-white px-5 py-2.5 rounded-xl transition flex items-center gap-2 font-rajdhani font-bold text-lg shadow-lg transform hover:-translate-x-1">
+                <i class="fa-solid fa-arrow-left"></i> VOLVER AL INICIO
+            </button>
+
+            <div id="category-header-banner" class="reveal mb-8 p-5 md:p-8 rounded-2xl border border-kiwi-border bg-gradient-to-r from-kiwi-card to-kiwi-dark shadow-xl flex items-center gap-4">
+                <h2 id="category-title" class="font-orbitron text-2xl md:text-3xl font-black text-white uppercase flex items-center gap-3">
+                    CATEGORÍA
+                </h2>
+            </div>
+
+            <div id="roblox-subcategories" class="reveal hidden mb-8 bg-kiwi-card border border-blue-500/40 rounded-2xl p-5 shadow-lg">
+                <h4 class="font-orbitron text-sm font-bold text-blue-400 mb-3 uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-gamepad"></i> Selecciona qué buscas:
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 font-rajdhani font-bold">
+                    <button onclick="filterRobloxSub('fruits')" class="roblox-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-blue-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                        <span class="text-2xl">🍎</span> FRUTAS BLOX FRUITS
+                    </button>
+                    <button onclick="filterRobloxSub('gamepasses')" class="roblox-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-blue-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                        <span class="text-2xl">🎫</span> GAMEPASSES
+                    </button>
+                    <button onclick="filterRobloxSub('robux')" class="roblox-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-blue-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                        <span class="text-2xl">💎</span> ROBUX (CALCULADORA)
+                    </button>
+                </div>
+            </div>
+
+            <div id="freefire-subcategories" class="reveal hidden mb-8 bg-kiwi-card border border-orange-500/40 rounded-2xl p-5 shadow-lg">
+                <h4 class="font-orbitron text-sm font-bold text-orange-400 mb-3 uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-fire"></i> Tipo de recarga:
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 font-rajdhani font-bold">
+                    <button onclick="filterFreeFireSub('ilimitado')" class="ff-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-orange-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                        <span class="text-2xl">💎</span> ILIMITADOS
+                    </button>
+                    <button onclick="filterFreeFireSub('limitado')" class="ff-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-orange-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                        <span class="text-2xl">⏳</span> LIMITADOS (1 x ID)
+                    </button>
+                </div>
+            </div>
+
+            <div id="instagram-subcategories" class="reveal hidden mb-8 bg-kiwi-card border border-pink-500/40 rounded-2xl p-5 shadow-lg">
+                <h4 class="font-orbitron text-sm font-bold text-pink-400 mb-3 uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-heart"></i> Selecciona el servicio:
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 font-rajdhani font-bold">
+                    <button onclick="filterIgSub('seguidores')" class="ig-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-pink-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                        <span class="text-2xl">👥</span> SEGUIDORES
+                    </button>
+                    <button onclick="filterIgSub('likes')" class="ig-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-pink-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                        <span class="text-2xl">❤️</span> LIKES / VISTAS
+                    </button>
+                </div>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-hidden">
+                </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-kiwi-dark border-t border-kiwi-border py-8 mt-16 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <span class="font-orbitron font-bold text-white">KIWII STORE</span>
+                <span class="text-xs text-gray-500">© 2026 - Todos los derechos reservados.</span>
+            </div>
+            <div class="flex gap-4 text-xl text-gray-400">
+                <a href="https://instagram.com/kiwiistore2026" target="_blank" class="hover:text-pink-500 transition" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://wa.me/5491139172595" target="_blank" class="hover:text-green-500 transition" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://discord.gg/d35QmtVBSW" target="_blank" class="hover:text-[#5865F2] transition" title="Discord"><i class="fa-brands fa-discord"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="auth-modal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-kiwi-card border border-kiwi-border w-full max-w-md rounded-2xl p-6 relative shadow-2xl transform transition-transform duration-300 scale-95" id="auth-modal-card">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h3 class="font-orbitron text-xl font-bold text-center mb-1 text-white">Iniciar Sesión</h3>
+            <p class="text-gray-400 text-center text-xs mb-6">Ingresa para vincular tus compras y acceder a tu cuenta</p>
+            <div class="space-y-3">
+                <button onclick="simulateGoogleLogin()" class="w-full bg-white text-gray-900 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-100 transition shadow-md">
+                    <i class="fa-brands fa-google text-red-500 text-lg"></i> Continuar con Google
+                </button>
+                <button onclick="simulateDiscordLogin()" class="w-full bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition shadow-md">
+                    <i class="fa-brands fa-discord text-lg"></i> Vincular con Discord
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="checkout-modal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-kiwi-card border border-kiwi-red/60 w-full max-w-lg rounded-2xl p-6 relative shadow-2xl transform transition-transform duration-300 scale-95" id="checkout-modal-card">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+
+            <span class="bg-kiwi-red/20 text-kiwi-red text-[10px] font-orbitron font-bold px-3 py-1 rounded-full uppercase">PAGO Y CONFIRMACIÓN</span>
+            <h3 id="modal-product-title" class="font-orbitron text-xl font-bold text-white mt-2 mb-1">Producto</h3>
+            <p id="modal-product-price" class="text-kiwi-red font-bold font-rajdhani text-2xl mb-2">$0 ARS</p>
+            
+            <p id="limited-warning" class="hidden text-orange-400 text-xs font-bold bg-orange-900/30 p-2 rounded mb-4 border border-orange-500/50">
+                <i class="fa-solid fa-triangle-exclamation"></i> ESTA ES UNA OFERTA LIMITADA (SOLO 1 COMPRA POR ID).
+            </p>
+
+            <div class="bg-kiwi-dark p-3.5 rounded-xl border border-kiwi-border mb-4 text-xs space-y-1">
+                <p class="text-gray-300 font-bold font-orbitron uppercase text-[11px] text-kiwi-gold">DATOS DE TRANSFERENCIA (MERCADO PAGO):</p>
+                <p class="text-gray-300"><span class="text-gray-500">Alias CBU:</span> <strong class="text-white font-mono bg-kiwi-card px-1.5 py-0.5 rounded">Ivan.admin</strong></p>
+                <p class="text-gray-300"><span class="text-gray-500">Titular:</span> <strong class="text-white">Iván Estrada</strong></p>
+            </div>
+
+            <form onsubmit="handlePurchaseSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1 font-orbitron">Tu Usuario / ID / Link de Perfil</label>
+                    <input type="text" id="user-account-input" required placeholder="Ej: ID FreeFire / Link Instagram / Usuario" class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-3 text-white focus:border-kiwi-red focus:outline-none text-sm transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1 font-orbitron">Método de Pago Seleccionado</label>
+                    <select id="payment-method-select" class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-3 text-white focus:border-kiwi-red focus:outline-none text-sm transition">
+                        <option>Mercado Pago / Transferencia (Argentina)</option>
+                        <option>Nequi / Bancolombia (Colombia)</option>
+                        <option>OXXO / SPEI (México)</option>
+                        <option>Yape / Plin (Perú)</option>
+                        <option>USDT Binance Pay (Crypto)</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-orbitron font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 transform hover:scale-[1.02]">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> ENVIAR COMPROBANTE Y FOTO
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // --- SCROLL REVEAL ANIMATION ---
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 50; // Punto donde aparece
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+
+        // --- BASE DE DATOS COMPLETA ---
+        const products = [
+            // FRUTAS BLOX FRUITS
+            { id: 101, category: 'roblox', sub: 'fruits', title: 'Fruta Dragon', price: '5.000 Robux - $55.000 ARS', emoji: '🐉', tag: 'Máxima', popular: true },
+            { id: 102, category: 'roblox', sub: 'fruits', title: 'Fruta Control', price: '3.200 Robux - $35.200 ARS', emoji: '🧊', tag: 'Máxima', popular: true },
+            { id: 103, category: 'roblox', sub: 'fruits', title: 'Fruta Kitsune', price: '4.000 Robux - $44.000 ARS', emoji: '🦊', tag: 'Máxima', popular: true },
+            { id: 104, category: 'roblox', sub: 'fruits', title: 'Fruta Dough', price: '2.800 Robux - $30.800 ARS', emoji: '🍩', tag: 'Máxima', popular: true },
+            { id: 105, category: 'roblox', sub: 'fruits', title: 'Fruta Tiger', price: '3.000 Robux - $33.000 ARS', emoji: '🐯', tag: 'Máxima', popular: true },
+            { id: 106, category: 'roblox', sub: 'fruits', title: 'Fruta T-Rex', price: '2.350 Robux - $25.850 ARS', emoji: '🦖', tag: 'Máxima', popular: true },
+            { id: 107, category: 'roblox', sub: 'fruits', title: 'Fruta Yeti', price: '2.700 Robux - $29.700 ARS', emoji: '⛄', tag: 'Máxima', popular: true },
+            { id: 108, category: 'roblox', sub: 'fruits', title: 'Fruta Spirit', price: '2.400 Robux - $26.400 ARS', emoji: '👻', tag: 'Máxima', popular: true },
+            { id: 109, category: 'roblox', sub: 'fruits', title: 'Fruta Gas', price: '2.500 Robux - $27.500 ARS', emoji: '☁️', tag: 'Máxima', popular: true },
+            { id: 110, category: 'roblox', sub: 'fruits', title: 'Fruta Venom', price: '2.900 Robux - $31.900 ARS', emoji: '☠️', tag: 'Máxima', popular: true },
+
+            { id: 111, category: 'roblox', sub: 'fruits', title: 'Fruta Mammoth', price: '2.700 Robux - $29.700 ARS', emoji: '🦣', tag: 'Alta', popular: false },
+            { id: 112, category: 'roblox', sub: 'fruits', title: 'Fruta Blizzard', price: '2.400 Robux - $26.400 ARS', emoji: '❄️', tag: 'Alta', popular: false },
+            { id: 113, category: 'roblox', sub: 'fruits', title: 'Fruta Portal', price: '1.900 Robux - $20.900 ARS', emoji: '🌀', tag: 'Alta', popular: false },
+            { id: 114, category: 'roblox', sub: 'fruits', title: 'Fruta Shadow', price: '2.900 Robux - $31.900 ARS', emoji: '🦇', tag: 'Alta', popular: false },
+            { id: 115, category: 'roblox', sub: 'fruits', title: 'Fruta Lightning', price: '1.800 Robux - $19.800 ARS', emoji: '⚡', tag: 'Alta', popular: false },
+            { id: 116, category: 'roblox', sub: 'fruits', title: 'Fruta Magma', price: '1.300 Robux - $14.300 ARS', emoji: '🌋', tag: 'Alta', popular: false },
+            { id: 117, category: 'roblox', sub: 'fruits', title: 'Fruta Ice', price: '1.350 Robux - $14.850 ARS', emoji: '🧊', tag: 'Alta', popular: false },
+            { id: 118, category: 'roblox', sub: 'fruits', title: 'Fruta Light', price: '1.100 Robux - $12.100 ARS', emoji: '✨', tag: 'Alta', popular: false },
+            { id: 119, category: 'roblox', sub: 'fruits', title: 'Fruta Buddha', price: '1.200 Robux - $13.200 ARS', emoji: '🕉️', tag: 'Alta', popular: false },
+            { id: 120, category: 'roblox', sub: 'fruits', title: 'Fruta Quake', price: '1.000 Robux - $11.000 ARS', emoji: '💥', tag: 'Alta', popular: false },
+
+            { id: 121, category: 'roblox', sub: 'fruits', title: 'Fruta Phoenix', price: '1.800 Robux - $19.800 ARS', emoji: '🐦', tag: 'Media', popular: false },
+            { id: 122, category: 'roblox', sub: 'fruits', title: 'Fruta Sound', price: '1.600 Robux - $17.600 ARS', emoji: '🎵', tag: 'Media', popular: false },
+            { id: 123, category: 'roblox', sub: 'fruits', title: 'Fruta Spider', price: '1.500 Robux - $16.500 ARS', emoji: '🕷️', tag: 'Media', popular: false },
+            { id: 124, category: 'roblox', sub: 'fruits', title: 'Fruta Love', price: '1.300 Robux - $14.300 ARS', emoji: '💖', tag: 'Media', popular: false },
+            { id: 125, category: 'roblox', sub: 'fruits', title: 'Fruta Ghost', price: '1.250 Robux - $13.750 ARS', emoji: '👻', tag: 'Media', popular: false },
+            { id: 126, category: 'roblox', sub: 'fruits', title: 'Fruta Creation', price: '1.200 Robux - $13.200 ARS', emoji: '🧱', tag: 'Media', popular: false },
+            { id: 127, category: 'roblox', sub: 'fruits', title: 'Fruta Eagle', price: '1.100 Robux - $12.100 ARS', emoji: '🦅', tag: 'Media', popular: false },
+            { id: 128, category: 'roblox', sub: 'fruits', title: 'Fruta Flame', price: '1.000 Robux - $11.000 ARS', emoji: '🔥', tag: 'Media', popular: false },
+            { id: 129, category: 'roblox', sub: 'fruits', title: 'Fruta Sand', price: '850 Robux - $9.350 ARS', emoji: '🏖️', tag: 'Media', popular: false },
+            { id: 130, category: 'roblox', sub: 'fruits', title: 'Fruta Diamond', price: '600 Robux - $6.600 ARS', emoji: '💎', tag: 'Media', popular: false },
+
+            // GAMEPASSES BLOX FRUITS
+            { id: 131, category: 'roblox', sub: 'gamepasses', title: 'Fruit Notifier', price: '2.700 Robux - $29.700 ARS', emoji: '📡', tag: 'Buscado', popular: true },
+            { id: 132, category: 'roblox', sub: 'gamepasses', title: 'Dark Blade', price: '1.200 Robux - $13.200 ARS', emoji: '🗡️', tag: 'Buscado', popular: true },
+            { id: 133, category: 'roblox', sub: 'gamepasses', title: '2x Mastery', price: '450 Robux - $4.950 ARS', emoji: '⚔️', tag: 'Buscado', popular: false },
+            { id: 134, category: 'roblox', sub: 'gamepasses', title: '2x Money', price: '450 Robux - $4.950 ARS', emoji: '💰', tag: 'Buscado', popular: true },
+            { id: 135, category: 'roblox', sub: 'gamepasses', title: '+1 Fruit Storage', price: '400 Robux - $4.400 ARS', emoji: '🎒', tag: 'Buscado', popular: false },
+            { id: 136, category: 'roblox', sub: 'gamepasses', title: 'Fast Boats', price: '350 Robux - $3.850 ARS', emoji: '🚤', tag: 'Buscado', popular: false },
+            { id: 137, category: 'roblox', sub: 'gamepasses', title: '2x Boss Drops', price: '350 Robux - $3.850 ARS', emoji: '👹', tag: 'Buscado', popular: false },
+
+            // FREE FIRE - ILIMITADOS
+            { id: 201, category: 'freefire', sub: 'ilimitado', title: '340 Diamantes', price: '$4.600 ARS', emoji: '💎', tag: '', popular: false },
+            { id: 202, category: 'freefire', sub: 'ilimitado', title: '572 Diamantes', price: '$7.800 ARS', emoji: '💎', tag: '', popular: false },
+            { id: 203, category: 'freefire', sub: 'ilimitado', title: '1.160 Diamantes', price: '$14.400 ARS', emoji: '💎', tag: '', popular: false },
+            { id: 204, category: 'freefire', sub: 'ilimitado', title: '2.389 Diamantes', price: '$24.800 ARS', emoji: '💎', tag: 'Más Elegido', popular: true },
+            { id: 205, category: 'freefire', sub: 'ilimitado', title: '6.160 Diamantes', price: '$64.000 ARS', emoji: '💎', tag: 'Mejor Oferta', popular: true },
+
+            // FREE FIRE - LIMITADOS
+            { id: 211, category: 'freefire', sub: 'limitado', title: '341 Diamantes (Limitado)', price: '$3.200 ARS', emoji: '🔥', tag: 'Limitado', popular: false, isLimited: true },
+            { id: 212, category: 'freefire', sub: 'limitado', title: '572 Diamantes (Limitado)', price: '$7.200 ARS', emoji: '🔥', tag: 'Limitado', popular: false, isLimited: true },
+            { id: 213, category: 'freefire', sub: 'limitado', title: '1.160 Diamantes (Limitado)', price: '$12.000 ARS', emoji: '🔥', tag: 'Limitado', popular: false, isLimited: true },
+            { id: 214, category: 'freefire', sub: 'limitado', title: '2.398 Diamantes (Limitado)', price: '$20.800 ARS', emoji: '🔥', tag: 'Más Elegido', popular: true, isLimited: true },
+            { id: 215, category: 'freefire', sub: 'limitado', title: '6.160 Diamantes (Limitado)', price: '$48.000 ARS', emoji: '🔥', tag: 'Mejor Oferta', popular: true, isLimited: true },
+
+            // INSTAGRAM
+            { id: 401, category: 'instagram', sub: 'seguidores', title: '500 Seguidores (Básico)', price: '$4.000 ARS', emoji: '👥', tag: '', popular: false },
+            { id: 402, category: 'instagram', sub: 'seguidores', title: '1.000 Seguidores (Básico)', price: '$4.800 ARS', emoji: '👥', tag: '', popular: false },
+            { id: 403, category: 'instagram', sub: 'seguidores', title: '2.000 Seguidores (Básico)', price: '$8.000 ARS', emoji: '👥', tag: '', popular: false },
+            { id: 404, category: 'instagram', sub: 'seguidores', title: '5.000 Seguidores (Kiwihots)', price: '$16.000 ARS', emoji: '🌶️', tag: 'Kiwihots', popular: true },
+            { id: 405, category: 'instagram', sub: 'seguidores', title: '10.000 Seguidores (Kiwihots)', price: '$25.600 ARS', emoji: '🌶️', tag: 'Kiwihots', popular: true },
+            { id: 406, category: 'instagram', sub: 'seguidores', title: '20.000 Seguidores (Mega)', price: '$40.000 ARS', emoji: '💥', tag: 'Mega Oferta', popular: true },
+            { id: 407, category: 'instagram', sub: 'seguidores', title: '50.000 Seguidores (Mega)', price: '$64.000 ARS', emoji: '💥', tag: 'Mega Oferta', popular: true },
+
+            { id: 411, category: 'instagram', sub: 'likes', title: '500 Likes/Vistas', price: '$2.080 ARS', emoji: '❤️', tag: '', popular: false },
+            { id: 412, category: 'instagram', sub: 'likes', title: '1.000 Likes/Vistas', price: '$3.120 ARS', emoji: '❤️', tag: '', popular: false },
+            { id: 413, category: 'instagram', sub: 'likes', title: '2.000 Likes/Vistas', price: '$5.200 ARS', emoji: '❤️', tag: '', popular: false },
+            { id: 414, category: 'instagram', sub: 'likes', title: '5.000 Likes/Vistas', price: '$6.240 ARS', emoji: '🔥', tag: 'Kiwihots', popular: true },
+            { id: 415, category: 'instagram', sub: 'likes', title: '10.000 Likes/Vistas', price: '$9.880 ARS', emoji: '🔥', tag: 'Kiwihots', popular: true },
+            { id: 416, category: 'instagram', sub: 'likes', title: '20.000 Likes/Vistas', price: '$13.000 ARS', emoji: '🌟', tag: 'Mega Oferta', popular: true },
+            { id: 417, category: 'instagram', sub: 'likes', title: '50.000 Likes/Vistas', price: '$20.800 ARS', emoji: '🌟', tag: 'Mega Oferta', popular: true },
+
+            // STREAMING
+            { id: 301, category: 'streaming', title: 'Netflix 4K (1 Perfil / 1 Mes)', price: '2.5$ - $3.750 ARS', emoji: '🎬', tag: 'Más Vendido', popular: true },
+            { id: 302, category: 'streaming', title: 'Netflix Lifetime Normal', price: '15$ - $22.500 ARS', emoji: '🎥', tag: 'Lifetime', popular: false },
+            { id: 303, category: 'streaming', title: 'Netflix 4K Full Acceso', price: '20$ - $30.000 ARS', emoji: '🍿', tag: 'Alta Calidad', popular: true },
+            { id: 304, category: 'streaming', title: 'Crunchyroll Mega Fan (Normal)', price: '15$ - $22.500 ARS', emoji: '🍥', tag: 'Anime', popular: false },
+            { id: 305, category: 'streaming', title: 'Crunchyroll Mega Fan (Full)', price: '18$ - $27.000 ARS', emoji: '⛩️', tag: 'Full', popular: true },
+            { id: 306, category: 'streaming', title: 'HBO Max Lifetime Normal', price: '15$ - $22.500 ARS', emoji: '🟣', tag: '', popular: false },
+            { id: 307, category: 'streaming', title: 'Disney+ Lifetime', price: '15$ - $22.500 ARS', emoji: '🏰', tag: '', popular: false },
+            { id: 308, category: 'streaming', title: 'Prime Video (1 Mes)', price: '5$ - $7.500 ARS', emoji: '📦', tag: '', popular: false },
+            { id: 309, category: 'streaming', title: 'Paramount+ Lifetime Normal', price: '15$ - $22.500 ARS', emoji: '⛰️', tag: '', popular: false },
+            { id: 310, category: 'streaming', title: 'Spotify Premium Full', price: '10$ - $15.000 ARS', emoji: '🎵', tag: 'Música', popular: true },
+            { id: 311, category: 'streaming', title: 'CapCut Pro Lifetime', price: '10$ - $15.000 ARS', emoji: '✂️', tag: 'Edición', popular: true },
+            { id: 312, category: 'streaming', title: 'YouTube Premium', price: '14$ - $21.000 ARS', emoji: '▶️', tag: 'Sin Anuncios', popular: true },
+            { id: 313, category: 'streaming', title: 'ExpressVPN (Celular)', price: '5$ - $7.500 ARS', emoji: '🛡️', tag: 'Seguridad', popular: false },
+            { id: 314, category: 'streaming', title: 'Géminis Pro+ (18 Meses)', price: '22$ - $33.000 ARS', emoji: '✨', tag: 'IA', popular: true },
+            { id: 315, category: 'streaming', title: 'Chat GPT Plus (1 Mes)', price: '12$ - $18.000 ARS', emoji: '🤖', tag: 'IA', popular: true }
+        ];
+
+        let currentActiveProduct = null;
+
+        // --- RENDERIZADO DE PRODUCTOS ---
+        function renderProducts(items) {
+            const container = document.getElementById('product-grid');
+            container.innerHTML = '';
+
+            items.forEach((prod, index) => {
+                const card = document.createElement('div');
+                card.className = `reveal bg-kiwi-card border ${prod.popular ? 'border-kiwi-red glow-red' : 'border-kiwi-border'} rounded-2xl p-5 flex flex-col justify-between hover:scale-[1.02] transition duration-300 relative`;
+                card.style.transitionDelay = `${(index % 3) * 0.1}s`; // Efecto escalera
+                
+                card.innerHTML = `
+                    ${prod.popular && prod.tag ? `<span class="absolute -top-3 right-4 bg-kiwi-red text-white text-[10px] font-orbitron font-bold px-3 py-1 rounded-full uppercase tracking-widest">${prod.tag}</span>` : ''}
+                    <div>
+                        <div class="w-14 h-14 bg-kiwi-dark border border-kiwi-border rounded-xl flex items-center justify-center mb-4 text-3xl shadow-inner">
+                            ${prod.emoji}
+                        </div>
+                        <h4 class="font-orbitron font-bold text-base mb-2 text-white">${prod.title}</h4>
+                        <p class="text-sm font-rajdhani text-gray-400 font-bold mb-4">${prod.price}</p>
+                    </div>
+                    <button onclick="openCheckout(${prod.id})" class="w-full bg-kiwi-dark hover:bg-kiwi-red border border-kiwi-border hover:border-kiwi-red text-white font-rajdhani font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cart-shopping text-sm"></i> Comprar Ahora
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+            setTimeout(reveal, 100); // Disparar la animación inmediatamente
+        }
+
+        // --- CALCULADORA DE ROBUX ---
+        function renderRobuxCalculator() {
+            const container = document.getElementById('product-grid');
+            container.innerHTML = `
+                <div class="reveal col-span-1 md:col-span-2 lg:col-span-3 bg-kiwi-card border border-blue-500 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 text-9xl opacity-5"><i class="fa-solid fa-gem"></i></div>
+                    <h3 class="font-orbitron font-bold text-2xl text-white mb-6 flex items-center gap-3">
+                        <span class="text-3xl">💎</span> Calculadora de Robux Personalizada
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase mb-2 font-orbitron">Cantidad de Robux (100 a +2000)</label>
+                            <input type="number" id="custom-robux-amount" value="100" min="100" step="100" oninput="calculateRobux()" class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-4 text-white focus:border-blue-500 focus:outline-none font-bold text-xl transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase mb-2 font-orbitron">Método de Envío</label>
+                            <select id="custom-robux-method" onchange="calculateRobux()" class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-4 text-white focus:border-blue-500 focus:outline-none text-base transition">
+                                <option value="12">Por Grupo ($1.200 ARS cada 100 R$)</option>
+                                <option value="13">Por Gamepass ($1.300 ARS cada 100 R$)</option>
+                                <option value="14.5">Por Plus ($1.450 ARS cada 100 R$)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex flex-col md:flex-row items-center justify-between bg-kiwi-dark p-5 rounded-xl border border-kiwi-border relative z-10">
+                        <div class="mb-4 md:mb-0 text-center md:text-left">
+                            <p class="text-gray-400 text-sm font-rajdhani uppercase">Total a pagar en Pesos Argentinos:</p>
+                            <p class="text-4xl font-orbitron font-black text-green-400">$<span id="robux-calculated-price">1.200</span> ARS</p>
+                        </div>
+                        <button onclick="buyCustomRobuxBtn()" class="bg-blue-600 hover:bg-blue-700 text-white font-orbitron font-bold py-4 px-8 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-lg transform hover:scale-105">
+                            <i class="fa-solid fa-cart-shopping"></i> Comprar Robux
+                        </button>
+                    </div>
+                </div>
+            `;
+            calculateRobux();
+            setTimeout(reveal, 100);
+        }
+
+        function calculateRobux() {
+            const amountInput = document.getElementById('custom-robux-amount');
+            let amount = parseInt(amountInput.value);
+            if(isNaN(amount) || amount < 0) amount = 0;
+            
+            const multiplier = parseFloat(document.getElementById('custom-robux-method').value);
+            const total = (amount / 100) * (multiplier * 100);
+            
+            document.getElementById('robux-calculated-price').textContent = total.toLocaleString('es-AR');
+        }
+
+        function buyCustomRobuxBtn() {
+            const amount = document.getElementById('custom-robux-amount').value;
+            if(amount < 100) return alert("La compra mínima es de 100 Robux.");
+            const methodSelect = document.getElementById('custom-robux-method');
+            const methodText = methodSelect.options[methodSelect.selectedIndex].text.split('(')[0].trim();
+            const total = document.getElementById('robux-calculated-price').textContent;
+            
+            // Creamos un objeto virtual para pasar al checkout
+            currentActiveProduct = {
+                title: `${amount} Robux (${methodText})`,
+                price: `$${total} ARS`,
+                isLimited: false,
+                category: 'roblox'
+            };
+            openCheckout(null, true);
+        }
+
+        // --- MANEJO DE CATEGORIAS VISUALES ---
+        function filterCategory(category) {
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('category-view').classList.remove('hidden');
+
+            const titles = {
+                'roblox': '<i class="fa-solid fa-gamepad text-blue-500"></i> ROBLOX & BLOX FRUITS',
+                'freefire': '<i class="fa-solid fa-fire text-orange-500"></i> FREE FIRE',
+                'streaming': '<i class="fa-solid fa-tv text-purple-500"></i> STREAMING & IA',
+                'instagram': '<i class="fa-brands fa-instagram text-pink-500"></i> REDES SOCIALES'
+            };
+            document.getElementById('category-title').innerHTML = titles[category] || 'CATEGORÍA';
+
+            // Ocultar todos los sub-menús primero
+            document.getElementById('roblox-subcategories').classList.add('hidden');
+            document.getElementById('freefire-subcategories').classList.add('hidden');
+            document.getElementById('instagram-subcategories').classList.add('hidden');
+
+            if (category === 'roblox') {
+                document.getElementById('roblox-subcategories').classList.remove('hidden');
+                filterRobloxSub('fruits');
+            } else if (category === 'freefire') {
+                document.getElementById('freefire-subcategories').classList.remove('hidden');
+                filterFreeFireSub('ilimitado');
+            } else if (category === 'instagram') {
+                document.getElementById('instagram-subcategories').classList.remove('hidden');
+                filterIgSub('seguidores');
+            } else {
+                renderProducts(products.filter(p => p.category === category));
+            }
+            
+            document.getElementById('catalog-section').scrollIntoView({ behavior: 'smooth' });
+            setTimeout(reveal, 100);
+        }
+
+        // --- VOLVER AL INICIO ---
+        function goBackToHome() {
+            document.getElementById('category-view').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+            document.getElementById('catalog-section').scrollIntoView({ behavior: 'smooth' });
+            setTimeout(reveal, 100);
+        }
+
+        // --- SUB FILTROS ---
+        function filterRobloxSub(subCat) {
+            document.querySelectorAll('.roblox-sub-btn').forEach(btn => {
+                btn.className = 'roblox-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-blue-500 hover:text-white transition flex items-center justify-center gap-3 text-lg';
+            });
+            event.currentTarget.className = 'roblox-sub-btn bg-blue-600/30 border border-blue-500 text-white p-3 rounded-xl transition flex items-center justify-center gap-3 text-lg shadow-inner transform scale-[1.02]';
+
+            if (subCat === 'robux') {
+                renderRobuxCalculator();
+            } else {
+                renderProducts(products.filter(p => p.category === 'roblox' && p.sub === subCat));
+            }
+        }
+
+        function filterFreeFireSub(subCat) {
+            document.querySelectorAll('.ff-sub-btn').forEach(btn => {
+                btn.className = 'ff-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-orange-500 hover:text-white transition flex items-center justify-center gap-3 text-lg';
+            });
+            event.currentTarget.className = 'ff-sub-btn bg-orange-600/30 border border-orange-500 text-white p-3 rounded-xl transition flex items-center justify-center gap-3 text-lg shadow-inner transform scale-[1.02]';
+            renderProducts(products.filter(p => p.category === 'freefire' && p.sub === subCat));
+        }
+
+        function filterIgSub(subCat) {
+            document.querySelectorAll('.ig-sub-btn').forEach(btn => {
+                btn.className = 'ig-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-pink-500 hover:text-white transition flex items-center justify-center gap-3 text-lg';
+            });
+            event.currentTarget.className = 'ig-sub-btn bg-pink-600/30 border border-pink-500 text-white p-3 rounded-xl transition flex items-center justify-center gap-3 text-lg shadow-inner transform scale-[1.02]';
+            renderProducts(products.filter(p => p.category === 'instagram' && p.sub === subCat));
+        }
+
+        // --- UI & SCROLL ---
+        function toggleDrawer() { document.getElementById('side-drawer').classList.toggle('translate-x-full'); }
+        function scrollToId(id) { 
+            if (document.getElementById('home-view').classList.contains('hidden')) {
+                goBackToHome();
+                setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 150);
+            } else {
+                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); 
+            }
+        }
+        
+        // FAQ Acordeón
+        function toggleFaq(id) { 
+            const content = document.getElementById(`faq-${id}`);
+            const icon = document.getElementById(`icon-faq-${id}`);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // --- WELCOME MODAL Y CARGA LÓGICA ---
+        window.addEventListener('load', () => {
+            // Bloquear scroll inicial
+            document.body.style.overflow = 'hidden';
+            
+            // Simular un tiempo mínimo de carga para que se vea la animación
+            setTimeout(() => {
+                const loader = document.getElementById('page-loader');
+                loader.classList.add('opacity-0');
+                
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    
+                    // Mostrar el Modal de Bienvenida
+                    const modal = document.getElementById('welcome-modal');
+                    modal.classList.remove('hidden');
+                    
+                    // Pequeño delay para la transición de CSS
+                    setTimeout(() => {
+                        modal.classList.remove('opacity-0');
+                        modal.classList.add('opacity-100');
+                        const innerCard = modal.querySelector('div.bg-kiwi-card');
+                        innerCard.classList.remove('scale-95');
+                        innerCard.classList.add('scale-100');
+                    }, 50);
+                    
+                }, 700); // 700ms por el duration-700
+            }, 1200); // 1.2 segundos mínimo de carga
+        });
+
+        function closeWelcomeModal() {
+            const modal = document.getElementById('welcome-modal');
+            const innerCard = modal.querySelector('div.bg-kiwi-card');
+            
+            innerCard.classList.remove('scale-100');
+            innerCard.classList.add('scale-95');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto'; // Permitir scroll nuevamente
+                reveal(); // Activa las animaciones reveal al cerrar el modal
+            }, 500); 
+        }
+
+        // --- AUTH ---
+        function openAuthModal() { 
+            const m = document.getElementById('auth-modal');
+            const mc = document.getElementById('auth-modal-card');
+            m.classList.remove('hidden'); 
+            setTimeout(() => mc.classList.replace('scale-95', 'scale-100'), 10);
+        }
+        function closeAuthModal() { 
+            const m = document.getElementById('auth-modal');
+            const mc = document.getElementById('auth-modal-card');
+            mc.classList.replace('scale-100', 'scale-95');
+            setTimeout(() => m.classList.add('hidden'), 300);
+        }
+        
+        function simulateGoogleLogin() {
+            document.getElementById('user-display-name').textContent = "Mi Cuenta";
+            closeAuthModal();
+        }
+        function simulateDiscordLogin() {
+            document.getElementById('user-display-name').textContent = "Mi Cuenta";
+            closeAuthModal();
+        }
+
+        // --- CHECKOUT & LÓGICA DE LÍMITES ---
+        function openCheckout(productId, isCustom = false) {
+            if (!isCustom) {
+                currentActiveProduct = products.find(p => p.id === productId);
+            }
+            
+            document.getElementById('modal-product-title').textContent = currentActiveProduct.title;
+            document.getElementById('modal-product-price').textContent = currentActiveProduct.price;
+            
+            if (currentActiveProduct.isLimited) {
+                document.getElementById('limited-warning').classList.remove('hidden');
+            } else {
+                document.getElementById('limited-warning').classList.add('hidden');
+            }
+
+            const m = document.getElementById('checkout-modal');
+            const mc = document.getElementById('checkout-modal-card');
+            m.classList.remove('hidden');
+            setTimeout(() => mc.classList.replace('scale-95', 'scale-100'), 10);
+        }
+        
+        function closeCheckoutModal() { 
+            const m = document.getElementById('checkout-modal');
+            const mc = document.getElementById('checkout-modal-card');
+            mc.classList.replace('scale-100', 'scale-95');
+            setTimeout(() => m.classList.add('hidden'), 300);
+        }
+
+        function handlePurchaseSubmit(e) {
+            e.preventDefault();
+            const targetUser = document.getElementById('user-account-input').value.trim();
+            const method = document.getElementById('payment-method-select').value;
+
+            if (currentActiveProduct.isLimited) {
+                let usedIds = JSON.parse(localStorage.getItem('kiwi_used_ids')) || [];
+                
+                if (usedIds.includes(targetUser.toLowerCase())) {
+                    alert("⚠️ ERROR: Este ID de jugador ya fue utilizado para comprar una promoción limitada. Recuerda que es solo 1 compra por cuenta en esta categoría.");
+                    return; 
+                }
+                
+                usedIds.push(targetUser.toLowerCase());
+                localStorage.setItem('kiwi_used_ids', JSON.stringify(usedIds));
+            }
+
+            let extraNota = currentActiveProduct.category === 'instagram' 
+                ? "\n📸 *NOTA:* Adjuntaré una foto de mi perfil para evitar errores, junto con el comprobante de pago." 
+                : "\n🧾 *NOTA:* Adjuntaré mi comprobante de pago a continuación.";
+
+            const message = `Hola Kiwi Store! 👋 Vengo de la web.\n\n📌 *Producto:* ${currentActiveProduct.title}\n💰 *Monto a pagar:* ${currentActiveProduct.price}\n👤 *Mi Usuario/ID/Link:* ${targetUser}\n💳 *Método de Pago:* ${method}\n${extraNota}`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/5491139172595?text=${encodedMessage}`;
+
+            closeCheckoutModal();
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
