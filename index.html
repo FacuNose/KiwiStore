@@ -61,8 +61,6 @@
         .text-float-subtle { animation: textPulseSubtle 4s ease-in-out infinite; }
         @keyframes textPulseSubtle { 0%, 100% { transform: translateY(0px); text-shadow: 0 0 5px rgba(255, 30, 39, 0.2); } 50% { transform: translateY(-2px); text-shadow: 0 0 15px rgba(255, 30, 39, 0.7); } }
 
-        .cat-card:hover { border-color: #ff1e27; background-color: rgba(255, 30, 39, 0.1); box-shadow: 0 0 20px rgba(255, 30, 39, 0.2); transform: scale(1.05); }
-        
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #3f4758; border-radius: 10px; }
@@ -70,6 +68,17 @@
 
         .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Animación en CSS puro para asegurar que el cargador siempre se oculta */
+        @keyframes fadeOutLoader {
+            0% { opacity: 1; visibility: visible; }
+            99% { opacity: 0; visibility: visible; }
+            100% { opacity: 0; visibility: hidden; z-index: -10; pointer-events: none; }
+        }
+        #page-loader {
+            animation: fadeOutLoader 0.5s ease forwards;
+            animation-delay: 1.5s;
+        }
 
         /* ROLES */
         .role-owner { color: #fbcfe8; background-color: rgba(244, 114, 182, 0.15); border: 1px solid #f472b6; text-shadow: 0 0 8px rgba(244,114,182,0.8); }
@@ -79,7 +88,7 @@
         .role-user { color: #9ca3af; background-color: transparent; border: 1px solid transparent; }
     </style>
 </head>
-<body class="animated-bg min-h-screen flex flex-col justify-between relative z-10 overflow-hidden">
+<body class="animated-bg min-h-screen flex flex-col justify-between relative z-10 overflow-x-hidden">
 
     <!-- ORBES DE FONDO ANIMADO -->
     <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
@@ -101,11 +110,11 @@
     <!-- MODAL DE BIENVENIDA -->
     <div id="welcome-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-500 hidden opacity-0">
         <div class="bg-kiwi-card border border-kiwi-red w-full max-w-lg rounded-3xl p-8 relative shadow-[0_0_50px_rgba(255,30,39,0.3)] text-center transform scale-95 transition-transform duration-500">
-            <button onclick="closeWelcomeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button>
+            <button onclick="window.closeWelcomeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button>
             <img src="Logo2.jpg" alt="Kiwii Store Logo" class="w-32 h-32 mx-auto mb-4 rounded-full border-4 border-kiwi-red shadow-lg kiwi-float object-cover">
             <h2 class="font-orbitron text-3xl font-black text-white mb-2">¡BIENVENIDO A <span class="text-kiwi-red text-glow-red">KIWII STORE</span>!</h2>
             <p class="text-gray-300 font-rajdhani text-lg mb-6">Tu aventura empieza aquí. Explora nuestro catálogo de Roblox, Free Fire, Streaming y más. Las mejores ofertas te están esperando.</p>
-            <button onclick="closeWelcomeModal()" class="bg-kiwi-red hover:bg-red-700 text-white font-orbitron font-bold py-3 px-8 rounded-xl transition shadow-lg glow-red text-lg w-full transform hover:scale-105">
+            <button onclick="window.closeWelcomeModal()" class="bg-kiwi-red hover:bg-red-700 text-white font-orbitron font-bold py-3 px-8 rounded-xl transition shadow-lg glow-red text-lg w-full transform hover:scale-105">
                 ¡ENTRAR A LA TIENDA! <i class="fa-solid fa-rocket ml-2"></i>
             </button>
         </div>
@@ -116,7 +125,7 @@
         <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between relative z-10">
             <div class="flex items-center gap-3">
                 <!-- MENU STAFF DORADO -->
-                <button id="staff-menu-btn" onclick="toggleStaffDrawer()" class="hidden relative text-kiwi-gold hover:text-yellow-400 text-2xl transition mr-1">
+                <button id="staff-menu-btn" onclick="window.toggleStaffDrawer()" class="hidden relative text-kiwi-gold hover:text-yellow-400 text-2xl transition mr-1">
                     <i class="fa-solid fa-bars"></i>
                     <span id="staff-notif-dot" class="hidden absolute -top-1 -right-1 flex h-3 w-3">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -124,7 +133,7 @@
                     </span>
                 </button>
 
-                <div class="flex items-center gap-3 cursor-pointer group" onclick="goBackToHome()">
+                <div class="flex items-center gap-3 cursor-pointer group" onclick="window.goBackToHome()">
                     <div class="relative w-12 h-12 rounded-full flex items-center justify-center kiwi-float-subtle overflow-hidden bg-kiwi-dark border border-kiwi-border shadow-[0_0_10px_rgba(255,30,39,0.2)] group-hover:border-kiwi-red transition-colors">
                         <img src="Logo.jpg" alt="Kiwi Logo" class="w-full h-full object-cover">
                     </div>
@@ -138,20 +147,20 @@
             </div>
 
             <nav class="hidden md:flex items-center gap-6 font-rajdhani font-bold text-base">
-                <button onclick="goBackToHome()" class="hover:text-kiwi-red transition">CATÁLOGO</button>
-                <button onclick="scrollToId('why-us')" class="hover:text-kiwi-red transition">¿POR QUÉ ELEGIRNOS?</button>
-                <button onclick="scrollToId('faq')" class="hover:text-kiwi-red transition">FAQ</button>
-                <button onclick="scrollToId('tutorials')" class="hover:text-kiwi-red transition">TUTORIALES</button>
+                <button onclick="window.goBackToHome()" class="hover:text-kiwi-red transition">CATÁLOGO</button>
+                <button onclick="window.scrollToId('why-us')" class="hover:text-kiwi-red transition">¿POR QUÉ ELEGIRNOS?</button>
+                <button onclick="window.scrollToId('faq')" class="hover:text-kiwi-red transition">FAQ</button>
+                <button onclick="window.scrollToId('tutorials')" class="hover:text-kiwi-red transition">TUTORIALES</button>
             </nav>
 
             <div class="flex items-center gap-3">
                 <a href="https://wa.me/5491139172595?text=Hola%20Kiwi%20Store,%20tengo%20una%20consulta" target="_blank" class="bg-green-600 hover:bg-green-700 text-white p-2.5 rounded-xl transition flex items-center justify-center shadow-lg hover:scale-105" title="Atención WhatsApp">
                     <i class="fa-brands fa-whatsapp text-lg"></i>
                 </a>
-                <button id="login-main-btn" onclick="openAuthModal()" class="bg-kiwi-red hover:bg-red-700 text-white font-rajdhani font-bold px-4 py-1.5 rounded-xl transition shadow-lg glow-red text-sm flex items-center gap-1 hover:scale-105">
+                <button id="login-main-btn" onclick="window.openAuthModal()" class="bg-kiwi-red hover:bg-red-700 text-white font-rajdhani font-bold px-4 py-1.5 rounded-xl transition shadow-lg glow-red text-sm flex items-center gap-1 hover:scale-105">
                     <i class="fa-solid fa-user"></i> <span id="user-display-name" class="hidden sm:inline">INICIAR SESIÓN</span>
                 </button>
-                <button onclick="toggleUserDrawer()" class="bg-kiwi-card border border-kiwi-border p-2.5 rounded-xl hover:border-kiwi-red transition text-white">
+                <button onclick="window.toggleUserDrawer()" class="bg-kiwi-card border border-kiwi-border p-2.5 rounded-xl hover:border-kiwi-red transition text-white">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
             </div>
@@ -164,20 +173,20 @@
             <h3 class="font-orbitron font-bold text-lg text-kiwi-gold flex items-center gap-2 text-shadow">
                 <i class="fa-solid fa-shield-halved"></i> PANEL STAFF
             </h3>
-            <button onclick="toggleStaffDrawer()" class="text-kiwi-gold hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <button onclick="window.toggleStaffDrawer()" class="text-kiwi-gold hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
         </div>
         
         <div class="flex flex-col h-full overflow-hidden">
             <!-- Tabs -->
             <div class="flex border-b border-kiwi-border bg-kiwi-dark">
-                <button onclick="switchStaffTab('cuentas')" id="tab-s-cuentas" class="flex-1 py-3 text-xs font-orbitron font-bold text-kiwi-gold border-b-2 border-kiwi-gold relative transition">
+                <button onclick="window.switchStaffTab('cuentas')" id="tab-s-cuentas" class="flex-1 py-3 text-xs font-orbitron font-bold text-kiwi-gold border-b-2 border-kiwi-gold relative transition">
                     CUENTAS <span id="notif-cuentas" class="hidden absolute top-1 right-2 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[9px]"></span>
                 </button>
-                <button onclick="switchStaffTab('compras')" id="tab-s-compras" class="flex-1 py-3 text-xs font-orbitron font-bold text-gray-500 hover:text-gray-300 relative transition">
+                <button onclick="window.switchStaffTab('compras')" id="tab-s-compras" class="flex-1 py-3 text-xs font-orbitron font-bold text-gray-500 hover:text-gray-300 relative transition">
                     COMPRAS <span id="notif-compras" class="hidden absolute top-1 right-2 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[9px]"></span>
                 </button>
-                <button onclick="switchStaffTab('chat')" id="tab-s-chat" class="flex-1 py-3 text-xs font-orbitron font-bold text-gray-500 hover:text-gray-300 transition">CHAT</button>
-                <button onclick="switchStaffTab('metricas')" id="tab-s-metricas" class="flex-1 py-3 text-xs font-orbitron font-bold text-gray-500 hover:text-gray-300 transition">INFO</button>
+                <button onclick="window.switchStaffTab('chat')" id="tab-s-chat" class="flex-1 py-3 text-xs font-orbitron font-bold text-gray-500 hover:text-gray-300 transition">CHAT</button>
+                <button onclick="window.switchStaffTab('metricas')" id="tab-s-metricas" class="flex-1 py-3 text-xs font-orbitron font-bold text-gray-500 hover:text-gray-300 transition">INFO</button>
             </div>
 
             <!-- Content Area -->
@@ -185,7 +194,7 @@
                 
                 <!-- Tab Cuentas -->
                 <div id="panel-cuentas" class="space-y-3">
-                    <input type="text" id="admin-search" placeholder="Buscar usuario..." onkeyup="filterAdminCuentas()" class="w-full bg-kiwi-dark border border-kiwi-gold/30 rounded-lg p-2 text-white text-xs mb-2 focus:outline-none focus:border-kiwi-gold">
+                    <input type="text" id="admin-search" placeholder="Buscar usuario..." onkeyup="window.filterAdminCuentas()" class="w-full bg-kiwi-dark border border-kiwi-gold/30 rounded-lg p-2 text-white text-xs mb-2 focus:outline-none focus:border-kiwi-gold">
                     <div id="admin-users-list" class="space-y-2">
                         <!-- Se llena con JS -->
                     </div>
@@ -203,7 +212,7 @@
                     </div>
                     <div class="flex gap-2 mt-auto">
                         <input type="text" id="staff-chat-input" placeholder="Mensaje..." class="w-full bg-kiwi-dark border border-kiwi-gold/50 rounded-lg p-2 text-white text-sm focus:outline-none focus:border-kiwi-gold">
-                        <button onclick="sendStaffMessage()" class="bg-kiwi-gold text-black rounded-lg px-4 hover:bg-yellow-500 transition"><i class="fa-solid fa-paper-plane"></i></button>
+                        <button onclick="window.sendStaffMessage()" class="bg-kiwi-gold text-black rounded-lg px-4 hover:bg-yellow-500 transition"><i class="fa-solid fa-paper-plane"></i></button>
                     </div>
                 </div>
 
@@ -222,7 +231,7 @@
     <!-- MODAL ACCIONES DE CUENTA (STAFF) -->
     <div id="action-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] hidden flex items-center justify-center p-4">
         <div class="bg-kiwi-card border border-kiwi-gold w-full max-w-sm rounded-2xl p-6 relative shadow-2xl">
-            <button onclick="closeActionModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <button onclick="window.closeActionModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             <h3 class="font-orbitron font-bold text-kiwi-gold mb-1">Gestionar: <span id="action-username" class="text-white"></span></h3>
             <p class="text-xs text-gray-400 mb-4">Solo Owner y CEO pueden hacer estas acciones.</p>
             
@@ -245,14 +254,14 @@
                     <label class="block text-xs font-bold text-gray-300 uppercase mb-1 font-orbitron">Cambiar Contraseña Forzada</label>
                     <div class="relative">
                         <input type="password" id="action-new-pass" placeholder="Nueva contraseña..." class="w-full bg-kiwi-dark border border-kiwi-border rounded-lg p-2 pr-10 text-white text-sm focus:outline-none focus:border-kiwi-gold transition">
-                        <i class="fa-solid fa-eye absolute right-3 top-2.5 text-gray-400 hover:text-white cursor-pointer" onclick="togglePassword('action-new-pass', this)"></i>
+                        <i class="fa-solid fa-eye absolute right-3 top-2.5 text-gray-400 hover:text-white cursor-pointer" onclick="window.togglePassword('action-new-pass', this)"></i>
                     </div>
                 </div>
                 <div class="flex gap-2 pt-2 border-t border-kiwi-border mt-2">
-                    <button id="action-save-btn" onclick="saveUserActions()" class="flex-1 bg-kiwi-gold hover:bg-yellow-600 text-black font-bold py-2 rounded-lg text-sm transition">Guardar</button>
-                    <button id="action-ban-btn" onclick="toggleBanUser()" class="flex-1 bg-red-900/80 hover:bg-red-700 text-white font-bold py-2 rounded-lg text-sm transition border border-red-500">Banear</button>
+                    <button id="action-save-btn" onclick="window.saveUserActions()" class="flex-1 bg-kiwi-gold hover:bg-yellow-600 text-black font-bold py-2 rounded-lg text-sm transition">Guardar</button>
+                    <button id="action-ban-btn" onclick="window.toggleBanUser()" class="flex-1 bg-red-900/80 hover:bg-red-700 text-white font-bold py-2 rounded-lg text-sm transition border border-red-500">Banear</button>
                 </div>
-                <button id="action-delete-btn" onclick="deleteUserAction()" class="w-full bg-red-900/40 hover:bg-red-600 text-white font-bold py-2 rounded-lg text-xs transition border border-red-800 mt-2">
+                <button id="action-delete-btn" onclick="window.deleteUserAction()" class="w-full bg-red-900/40 hover:bg-red-600 text-white font-bold py-2 rounded-lg text-xs transition border border-red-800 mt-2">
                     <i class="fa-solid fa-trash"></i> Eliminar Permanentemente
                 </button>
             </div>
@@ -266,7 +275,7 @@
                 <h3 class="font-orbitron font-bold text-lg text-white flex items-center gap-2">
                     <i class="fa-solid fa-compass text-kiwi-red"></i> COMUNIDADES
                 </h3>
-                <button onclick="toggleUserDrawer()" class="text-gray-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="window.toggleUserDrawer()" class="text-gray-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <h4 class="font-orbitron text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">NUESTRAS REDES</h4>
@@ -279,9 +288,24 @@
                 </a>
             </div>
             
-            <h4 class="font-orbitron text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 border-t border-kiwi-border pt-4">GRUPOS OFICIALES DE ROBLOX</h4>
-            <div class="space-y-2 text-[11px] font-rajdhani font-bold overflow-y-auto max-h-56 pr-2 custom-scrollbar" id="roblox-groups-container">
-                <!-- Se llenan con JS dinámicamente -->
+            <div class="bg-red-900/20 border border-red-500/50 rounded-xl p-4 mb-4">
+                <h4 class="text-red-500 font-bold text-xs uppercase mb-2">OBLIGATORIO UNIRSE SI O SI A TODOS SIN EXCEPCIÓN 😡</h4>
+                <div class="space-y-2 text-xs font-rajdhani mb-3">
+                    <a href="https://www.roblox.com/communities/35619576/ANIME-UGC-S-CREATOR#!/about" target="_blank" class="block text-gray-300 hover:text-white">🥝 ANIME UGC’S CREATOR</a>
+                    <a href="https://www.roblox.com/communities/34564860/Comunidad-Celestial-RBLX#!/about" target="_blank" class="block text-gray-300 hover:text-white">🥝 Comunidad Celestial RBLX</a>
+                    <a href="https://www.roblox.com/communities/13080841/Gorra-Shop#!/about" target="_blank" class="block text-gray-300 hover:text-white">🥝 Gorra Shop</a>
+                    <a href="https://www.roblox.com/communities/15119364/C#!/about" target="_blank" class="block text-gray-300 hover:text-white">🥝 ＢＬＡＣＫ ＣＡＴ＄ ＵＧC</a>
+                    <a href="https://www.roblox.com/communities/33422152/nxtrnd#!/about" target="_blank" class="block text-gray-300 hover:text-white">🥝 nxtrnd</a>
+                    <a href="https://www.roblox.com/communities/33332820/Random-Island#!/about" target="_blank" class="block text-gray-300 hover:text-white">🥝 Random Island</a>
+                    <a href="https://www.roblox.com/communities/35816914/One-Ugc-man#!/about" target="_blank" class="block text-gray-300 hover:text-white">🥝 One Ugc man</a>
+                    <a href="https://www.roblox.com/communities/35826008/Really#!/about" target="_blank" class="block text-gray-300 hover:text-white">🥝 Really..?!</a>
+                    <a href="https://www.roblox.com/communities/578297005/Anime-ugccs#!/about" target="_blank" class="block text-gray-300 hover:text-white">🥝 Anime ugccs</a>
+                    <a href="https://www.roblox.com/communities/33707960/SeIfMade-Ent#!/about" target="_blank" class="block text-gray-300 hover:text-white">🥝 #SeIfMade Ent</a>
+                    <a href="https://www.roblox.com/communities/35399081/drowsing#!/about" target="_blank" class="block text-gray-300 hover:text-white">🥝 drowsing</a>
+                    <a href="https://www.roblox.com/communities/809551446/AnimeFACTORY1#!/about" target="_blank" class="block text-gray-300 hover:text-white">🥝 AnimeFACTORY1</a>
+                    <a href="https://www.roblox.com/communities/567256399/UGC-Bundle-Shop#!/about" target="_blank" class="block text-gray-300 hover:text-white">🥝 UGC Bundle Shop</a>
+                </div>
+                <p class="text-[10px] text-gray-400 italic">Si no estas unido a todos mi proveedor directamente no quiere venderte. Esto lo hablo en serio, por favor unirse a todos si es que no quieres tener problemas con tu compra. Los Amo KiwiiMiembros.</p>
             </div>
         </div>
         <div class="pt-4 border-t border-kiwi-border text-center text-xs text-gray-500">
@@ -309,15 +333,17 @@
                             Selecciona la categoría que buscas para abrir el catálogo completo. Entrega rápida con métodos de pago para Latam y Crypto.
                         </p>
                     </div>
+                    <!-- MASCOTA FLOTANTE EN EL BANNER -->
                     <div class="mt-8 md:mt-0 relative w-48 h-48 flex items-center justify-center kiwi-float hidden md:flex">
                         <img src="Logo2.jpg" alt="Kiwi Mascota" class="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(255,30,39,0.4)] rounded-full">
                     </div>
                 </div>
             </div>
 
-            <!-- CATEGORÍAS EN CUADRADOS -->
+            <!-- CATEGORÍAS EN CUADRADOS (COLORES FIJOS) -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div onclick="filterCategory('roblox')" class="reveal cat-card cursor-pointer bg-kiwi-card border border-kiwi-border rounded-2xl p-4 flex flex-col items-center justify-center aspect-square transition duration-300" style="transition-delay: 0s;">
+                <!-- ROBLOX (Azul permanente) -->
+                <div onclick="window.filterCategory('roblox')" class="reveal cursor-pointer bg-blue-900/20 border border-blue-500 rounded-2xl p-4 flex flex-col items-center justify-center aspect-square transition duration-300 hover:bg-blue-500/30 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:scale-105" style="transition-delay: 0s;">
                     <div class="w-16 h-16 mb-2 flex items-center justify-center bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-600">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg" class="w-10 h-10 brightness-0 invert" alt="Roblox">
                     </div>
@@ -325,7 +351,8 @@
                     <span class="text-[10px] text-gray-400 font-rajdhani font-bold uppercase mt-1">& Blox Fruits</span>
                 </div>
                 
-                <div onclick="filterCategory('freefire')" class="reveal cat-card cursor-pointer bg-kiwi-card border border-kiwi-border rounded-2xl p-4 flex flex-col items-center justify-center aspect-square transition duration-300" style="transition-delay: 0.1s;">
+                <!-- FREE FIRE (Naranja permanente) -->
+                <div onclick="window.filterCategory('freefire')" class="reveal cursor-pointer bg-orange-900/20 border border-orange-500 rounded-2xl p-4 flex flex-col items-center justify-center aspect-square transition duration-300 hover:bg-orange-500/30 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] hover:scale-105" style="transition-delay: 0.1s;">
                     <div class="w-16 h-16 mb-2 flex items-center justify-center bg-orange-900/40 rounded-xl shadow-lg border border-orange-500/50 text-4xl">
                         🔥
                     </div>
@@ -333,7 +360,8 @@
                     <span class="text-[10px] text-gray-400 font-rajdhani font-bold uppercase mt-1">Diamantes</span>
                 </div>
                 
-                <div onclick="filterCategory('streaming')" class="reveal cat-card cursor-pointer bg-kiwi-card border border-kiwi-border rounded-2xl p-4 flex flex-col items-center justify-center aspect-square transition duration-300" style="transition-delay: 0.2s;">
+                <!-- STREAMING (Morado permanente) -->
+                <div onclick="window.filterCategory('streaming')" class="reveal cursor-pointer bg-purple-900/20 border border-purple-500 rounded-2xl p-4 flex flex-col items-center justify-center aspect-square transition duration-300 hover:bg-purple-500/30 hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:scale-105" style="transition-delay: 0.2s;">
                     <div class="w-16 h-16 mb-2 flex items-center justify-center bg-purple-900/40 rounded-xl shadow-lg border border-purple-500/50 text-3xl">
                         <i class="fa-solid fa-tv text-purple-400"></i>
                     </div>
@@ -341,7 +369,8 @@
                     <span class="text-[10px] text-gray-400 font-rajdhani font-bold uppercase mt-1">Apps & IA</span>
                 </div>
                 
-                <div onclick="filterCategory('instagram')" class="reveal cat-card cursor-pointer bg-kiwi-card border border-kiwi-border rounded-2xl p-4 flex flex-col items-center justify-center aspect-square transition duration-300" style="transition-delay: 0.3s;">
+                <!-- INSTAGRAM (Rosado permanente) -->
+                <div onclick="window.filterCategory('instagram')" class="reveal cursor-pointer bg-pink-900/20 border border-pink-500 rounded-2xl p-4 flex flex-col items-center justify-center aspect-square transition duration-300 hover:bg-pink-500/30 hover:shadow-[0_0_20px_rgba(236,72,153,0.4)] hover:scale-105" style="transition-delay: 0.3s;">
                     <div class="w-16 h-16 mb-2 flex items-center justify-center bg-pink-900/40 rounded-xl shadow-lg border border-pink-500/50 text-4xl">
                         <i class="fa-brands fa-instagram text-pink-500"></i>
                     </div>
@@ -443,7 +472,7 @@
                 </h3>
                 <div class="max-w-3xl mx-auto space-y-4">
                     <div class="reveal bg-kiwi-card border border-kiwi-border rounded-xl p-5 hover:border-kiwi-red/50 transition duration-300" style="transition-delay: 0s;">
-                        <h4 class="font-orbitron font-bold text-white flex items-center justify-between cursor-pointer group" onclick="toggleFaq(1)">
+                        <h4 class="font-orbitron font-bold text-white flex items-center justify-between cursor-pointer group" onclick="window.toggleFaq(1)">
                             <span class="group-hover:text-kiwi-red transition"><i class="fa-solid fa-clock mr-2 text-gray-500 group-hover:text-kiwi-red"></i> ¿Cuánto tarda en llegar mi recarga o cuenta?</span>
                             <i class="fa-solid fa-chevron-down text-kiwi-red transform transition-transform duration-300" id="icon-faq-1"></i>
                         </h4>
@@ -452,7 +481,7 @@
                         </p>
                     </div>
                     <div class="reveal bg-kiwi-card border border-kiwi-border rounded-xl p-5 hover:border-kiwi-red/50 transition duration-300" style="transition-delay: 0.1s;">
-                        <h4 class="font-orbitron font-bold text-white flex items-center justify-between cursor-pointer group" onclick="toggleFaq(2)">
+                        <h4 class="font-orbitron font-bold text-white flex items-center justify-between cursor-pointer group" onclick="window.toggleFaq(2)">
                             <span class="group-hover:text-kiwi-red transition"><i class="fa-solid fa-money-bill-transfer mr-2 text-gray-500 group-hover:text-kiwi-red"></i> ¿Cómo pago y confirmo mi compra?</span>
                             <i class="fa-solid fa-chevron-down text-kiwi-red transform transition-transform duration-300" id="icon-faq-2"></i>
                         </h4>
@@ -461,7 +490,7 @@
                         </p>
                     </div>
                     <div class="reveal bg-kiwi-card border border-kiwi-border rounded-xl p-5 hover:border-kiwi-red/50 transition duration-300" style="transition-delay: 0.2s;">
-                        <h4 class="font-orbitron font-bold text-white flex items-center justify-between cursor-pointer group" onclick="toggleFaq(3)">
+                        <h4 class="font-orbitron font-bold text-white flex items-center justify-between cursor-pointer group" onclick="window.toggleFaq(3)">
                             <span class="group-hover:text-kiwi-red transition"><i class="fa-solid fa-triangle-exclamation mr-2 text-gray-500 group-hover:text-kiwi-red"></i> ¿Qué pasa si me equivoco al escribir mi ID?</span>
                             <i class="fa-solid fa-chevron-down text-kiwi-red transform transition-transform duration-300" id="icon-faq-3"></i>
                         </h4>
@@ -470,7 +499,7 @@
                         </p>
                     </div>
                     <div class="reveal bg-kiwi-card border border-kiwi-border rounded-xl p-5 hover:border-kiwi-red/50 transition duration-300" style="transition-delay: 0.3s;">
-                        <h4 class="font-orbitron font-bold text-white flex items-center justify-between cursor-pointer group" onclick="toggleFaq(4)">
+                        <h4 class="font-orbitron font-bold text-white flex items-center justify-between cursor-pointer group" onclick="window.toggleFaq(4)">
                             <span class="group-hover:text-kiwi-red transition"><i class="fa-solid fa-headset mr-2 text-gray-500 group-hover:text-kiwi-red"></i> ¿Cuáles son los horarios de atención?</span>
                             <i class="fa-solid fa-chevron-down text-kiwi-red transform transition-transform duration-300" id="icon-faq-4"></i>
                         </h4>
@@ -508,7 +537,7 @@
 
         <!-- CATEGORY VIEW -->
         <div id="category-view" class="hidden min-h-screen">
-            <button onclick="goBackToHome()" class="mb-6 bg-kiwi-dark hover:bg-kiwi-red border border-kiwi-border text-white px-5 py-2.5 rounded-xl transition flex items-center gap-2 font-rajdhani font-bold text-lg shadow-lg transform hover:-translate-x-1">
+            <button onclick="window.goBackToHome()" class="mb-6 bg-kiwi-dark hover:bg-kiwi-red border border-kiwi-border text-white px-5 py-2.5 rounded-xl transition flex items-center gap-2 font-rajdhani font-bold text-lg shadow-lg transform hover:-translate-x-1">
                 <i class="fa-solid fa-arrow-left"></i> VOLVER AL INICIO
             </button>
 
@@ -524,13 +553,13 @@
                     <i class="fa-solid fa-gamepad"></i> Selecciona qué buscas:
                 </h4>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 font-rajdhani font-bold">
-                    <button onclick="filterRobloxSub('fruits')" class="roblox-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-blue-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                    <button id="tab-roblox-fruits" onclick="window.filterRobloxSub('fruits')" class="roblox-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-blue-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
                         <span class="text-2xl">🍎</span> FRUTAS BLOX FRUITS
                     </button>
-                    <button onclick="filterRobloxSub('gamepasses')" class="roblox-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-blue-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                    <button id="tab-roblox-gamepasses" onclick="window.filterRobloxSub('gamepasses')" class="roblox-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-blue-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
                         <span class="text-2xl">🎫</span> GAMEPASSES
                     </button>
-                    <button onclick="filterRobloxSub('robux')" class="roblox-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-blue-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                    <button id="tab-roblox-robux" onclick="window.filterRobloxSub('robux')" class="roblox-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-blue-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
                         <span class="text-2xl">💎</span> ROBUX (CALCULADORA)
                     </button>
                 </div>
@@ -541,10 +570,10 @@
                     <i class="fa-solid fa-fire"></i> Tipo de recarga:
                 </h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 font-rajdhani font-bold">
-                    <button onclick="filterFreeFireSub('ilimitado')" class="ff-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-orange-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                    <button id="tab-freefire-ilimitado" onclick="window.filterFreeFireSub('ilimitado')" class="ff-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-orange-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
                         <span class="text-2xl">💎</span> ILIMITADOS
                     </button>
-                    <button onclick="filterFreeFireSub('limitado')" class="ff-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-orange-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                    <button id="tab-freefire-limitado" onclick="window.filterFreeFireSub('limitado')" class="ff-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-orange-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
                         <span class="text-2xl">⏳</span> LIMITADOS (1 x ID)
                     </button>
                 </div>
@@ -555,10 +584,10 @@
                     <i class="fa-solid fa-heart"></i> Selecciona el servicio:
                 </h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 font-rajdhani font-bold">
-                    <button onclick="filterIgSub('seguidores')" class="ig-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-pink-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                    <button id="tab-ig-seguidores" onclick="window.filterIgSub('seguidores')" class="ig-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-pink-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
                         <span class="text-2xl">👥</span> SEGUIDORES
                     </button>
-                    <button onclick="filterIgSub('likes')" class="ig-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-pink-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
+                    <button id="tab-ig-likes" onclick="window.filterIgSub('likes')" class="ig-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-pink-500 hover:text-white transition flex items-center justify-center gap-3 text-lg">
                         <span class="text-2xl">❤️</span> LIKES / VISTAS
                     </button>
                 </div>
@@ -589,7 +618,7 @@
     <!-- MODAL DE LOGIN / REGISTRO / PERFIL -->
     <div id="auth-modal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-kiwi-card border border-kiwi-border w-full max-w-md rounded-2xl p-6 relative shadow-2xl transform transition-transform duration-300 scale-95" id="auth-modal-card">
-            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <button onclick="window.closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             
             <h3 class="font-orbitron text-xl font-bold text-center mb-1 text-white" id="auth-modal-title">Iniciar Sesión</h3>
             <p class="text-gray-400 text-center text-xs mb-6" id="auth-modal-desc">Ingresa para vincular tus compras y acceder a tu cuenta</p>
@@ -597,12 +626,12 @@
             <!-- VISTA: LOGIN / REGISTRO / RECUPERAR -->
             <div id="login-register-view">
                 <div class="flex justify-center gap-4 mb-6 border-b border-kiwi-border pb-2">
-                    <button onclick="switchAuthTab('login')" id="tab-login" class="font-orbitron font-bold text-kiwi-red border-b-2 border-kiwi-red pb-1 transition">INICIAR SESIÓN</button>
-                    <button onclick="switchAuthTab('register')" id="tab-register" class="font-orbitron font-bold text-gray-500 hover:text-gray-300 pb-1 transition">REGISTRARSE</button>
+                    <button onclick="window.switchAuthTab('login')" id="tab-login" class="font-orbitron font-bold text-kiwi-red border-b-2 border-kiwi-red pb-1 transition">INICIAR SESIÓN</button>
+                    <button onclick="window.switchAuthTab('register')" id="tab-register" class="font-orbitron font-bold text-gray-500 hover:text-gray-300 pb-1 transition">REGISTRARSE</button>
                 </div>
 
                 <!-- LOGIN FORM -->
-                <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+                <form id="login-form" onsubmit="window.handleLogin(event)" class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-300 uppercase mb-1 font-orbitron">Usuario</label>
                         <input type="text" id="login-user" required class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-3 text-white focus:border-kiwi-red focus:outline-none text-sm transition">
@@ -611,10 +640,10 @@
                         <label class="block text-xs font-bold text-gray-300 uppercase mb-1 font-orbitron">Contraseña</label>
                         <div class="relative">
                             <input type="password" id="login-pass" required class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-3 pr-10 text-white focus:border-kiwi-red focus:outline-none text-sm transition">
-                            <i class="fa-solid fa-eye absolute right-4 top-3.5 text-gray-400 hover:text-white cursor-pointer" onclick="togglePassword('login-pass', this)"></i>
+                            <i class="fa-solid fa-eye absolute right-4 top-3.5 text-gray-400 hover:text-white cursor-pointer" onclick="window.togglePassword('login-pass', this)"></i>
                         </div>
                     </div>
-                    <button type="button" onclick="switchAuthTab('forgot')" class="text-xs text-kiwi-gold hover:text-yellow-300 transition block text-right w-full mt-1">¿Olvidaste tu contraseña?</button>
+                    <button type="button" onclick="window.switchAuthTab('forgot')" class="text-xs text-kiwi-gold hover:text-yellow-300 transition block text-right w-full mt-1">¿Olvidaste tu contraseña?</button>
                     <button type="submit" class="w-full bg-kiwi-red hover:bg-red-700 text-white font-orbitron font-bold py-3 rounded-xl transition shadow-lg mt-4">ENTRAR</button>
                     
                     <div class="mt-4 pt-4 border-t border-kiwi-border space-y-2">
@@ -628,7 +657,7 @@
                 </form>
 
                 <!-- REGISTER FORM -->
-                <form id="register-form" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+                <form id="register-form" onsubmit="window.handleRegister(event)" class="space-y-4 hidden">
                     <div>
                         <label class="block text-xs font-bold text-gray-300 uppercase mb-1 font-orbitron">Usuario <span class="text-[10px] text-gray-500">(Debe ser único)</span></label>
                         <input type="text" id="reg-user" required class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-3 text-white focus:border-kiwi-red focus:outline-none text-sm transition">
@@ -642,7 +671,7 @@
                             <label class="block text-xs font-bold text-gray-300 uppercase mb-1 font-orbitron">Contraseña</label>
                             <div class="relative">
                                 <input type="password" id="reg-pass" required class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-3 pr-10 text-white focus:border-kiwi-red focus:outline-none text-sm transition">
-                                <i class="fa-solid fa-eye absolute right-3 top-3.5 text-gray-400 hover:text-white cursor-pointer" onclick="togglePassword('reg-pass', this)"></i>
+                                <i class="fa-solid fa-eye absolute right-3 top-3.5 text-gray-400 hover:text-white cursor-pointer" onclick="window.togglePassword('reg-pass', this)"></i>
                             </div>
                         </div>
                         <div>
@@ -656,7 +685,7 @@
                 </form>
 
                 <!-- RECUPERAR CONTRASEÑA -->
-                <form id="forgot-form" onsubmit="handleRecover(event)" class="space-y-4 hidden">
+                <form id="forgot-form" onsubmit="window.handleRecover(event)" class="space-y-4 hidden">
                     <p class="text-sm text-gray-400 mb-4 font-rajdhani">Ingresa tu usuario y correo. Si coinciden con nuestra base de datos, te mostraremos tu contraseña.</p>
                     <div>
                         <label class="block text-xs font-bold text-gray-300 uppercase mb-1 font-orbitron">Usuario</label>
@@ -667,7 +696,7 @@
                         <input type="email" id="rec-email" required class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-3 text-white focus:border-kiwi-red focus:outline-none text-sm transition">
                     </div>
                     <button type="submit" class="w-full bg-kiwi-gold hover:bg-yellow-600 text-black font-orbitron font-bold py-3 rounded-xl transition shadow-lg mt-4">RECUPERAR</button>
-                    <button type="button" onclick="switchAuthTab('login')" class="w-full bg-transparent text-gray-400 hover:text-white text-xs mt-2 transition">Volver al inicio de sesión</button>
+                    <button type="button" onclick="window.switchAuthTab('login')" class="w-full bg-transparent text-gray-400 hover:text-white text-xs mt-2 transition">Volver al inicio de sesión</button>
                 </form>
             </div>
 
@@ -683,7 +712,7 @@
                             <div class="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
                                 <i class="fa-solid fa-camera text-white text-sm"></i>
                             </div>
-                            <input type="file" id="profile-pic-upload" accept="image/*" class="hidden" onchange="uploadProfilePic(event)">
+                            <input type="file" id="profile-pic-upload" accept="image/*" class="hidden" onchange="window.uploadProfilePic(event)">
                         </div>
                         <div>
                             <h4 class="font-bold text-white text-lg flex items-center gap-2" id="profile-name">Usuario</h4>
@@ -697,7 +726,7 @@
                     <!-- Se llena con JS -->
                 </div>
                 
-                <button onclick="handleLogout()" class="w-full bg-red-900/50 hover:bg-red-800 text-white font-bold py-2.5 rounded-xl transition border border-red-500/30 text-sm">
+                <button onclick="window.handleLogout()" class="w-full bg-red-900/50 hover:bg-red-800 text-white font-bold py-2.5 rounded-xl transition border border-red-500/30 text-sm">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar Sesión
                 </button>
             </div>
@@ -707,7 +736,7 @@
     <!-- MODAL DE CHECKOUT -->
     <div id="checkout-modal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-kiwi-card border border-kiwi-red/60 w-full max-w-lg rounded-2xl p-6 relative shadow-2xl transform transition-transform duration-300 scale-95" id="checkout-modal-card">
-            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <button onclick="window.closeCheckoutModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
 
             <span class="bg-kiwi-red/20 text-kiwi-red text-[10px] font-orbitron font-bold px-3 py-1 rounded-full uppercase">PAGO Y CONFIRMACIÓN</span>
             <h3 id="modal-product-title" class="font-orbitron text-xl font-bold text-white mt-2 mb-1">Producto</h3>
@@ -723,7 +752,7 @@
                 <p class="text-gray-300"><span class="text-gray-500">Titular:</span> <strong class="text-white">Iván Estrada</strong></p>
             </div>
 
-            <form onsubmit="handlePurchaseSubmit(event)" class="space-y-4">
+            <form onsubmit="window.handlePurchaseSubmit(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-gray-300 uppercase mb-1 font-orbitron">Tu Usuario / ID / Link de Perfil</label>
                     <input type="text" id="user-account-input" required placeholder="Ej: ID FreeFire / Link Instagram / Usuario" class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-3 text-white focus:border-kiwi-red focus:outline-none text-sm transition">
@@ -745,7 +774,92 @@
         </div>
     </div>
 
+    <!-- SCRIPT PRINCIPAL -->
     <script>
+        window.currentActiveProduct = null;
+        let currentUser = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // Mostrar bienvenida poco después de que inicie la web
+            setTimeout(() => {
+                const welcome = document.getElementById('welcome-modal');
+                if (welcome) {
+                    welcome.classList.remove('hidden');
+                    setTimeout(() => welcome.classList.remove('opacity-0'), 50);
+                    const innerCard = welcome.querySelector('div.bg-kiwi-card');
+                    if(innerCard) {
+                        innerCard.classList.remove('scale-95');
+                        innerCard.classList.add('scale-100');
+                    }
+                }
+            }, 1800);
+
+            try {
+                initDB();
+                currentUser = JSON.parse(localStorage.getItem('kiwi_logged_user'));
+                updateAuthUI(); 
+                window.renderRobloxGroups();
+            } catch(e) { console.error("Error iniciando base de datos:", e); }
+        });
+
+        // ==========================================
+        // FUNCIONES DE CARTELES (Bienvenida y Checkout)
+        // ==========================================
+        window.closeWelcomeModal = function() {
+            const modal = document.getElementById('welcome-modal');
+            if(!modal) return;
+            const innerCard = modal.querySelector('div.bg-kiwi-card');
+            
+            if(innerCard) {
+                innerCard.classList.remove('scale-100');
+                innerCard.classList.add('scale-95');
+            }
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 500); 
+        };
+
+        window.openCheckout = function(productId, isCustom = false) {
+            if (!currentUser) {
+                alert("⚠️ Por favor, INICIA SESIÓN antes de comprar para que la compra se guarde en tu historial.");
+                window.openAuthModal();
+                return;
+            }
+
+            if (!isCustom) {
+                window.currentActiveProduct = window.products.find(p => p.id === productId);
+            }
+            
+            if(!window.currentActiveProduct) {
+                alert("Hubo un error cargando el producto. Recarga la página por favor.");
+                return;
+            }
+            
+            document.getElementById('modal-product-title').textContent = window.currentActiveProduct.title;
+            document.getElementById('modal-product-price').textContent = window.currentActiveProduct.price;
+            
+            if (window.currentActiveProduct.isLimited) {
+                document.getElementById('limited-warning').classList.remove('hidden');
+            } else {
+                document.getElementById('limited-warning').classList.add('hidden');
+            }
+
+            const m = document.getElementById('checkout-modal');
+            const mc = document.getElementById('checkout-modal-card');
+            m.classList.remove('hidden');
+            setTimeout(() => mc.classList.replace('scale-95', 'scale-100'), 10);
+        };
+
+        window.closeCheckoutModal = function() { 
+            const m = document.getElementById('checkout-modal');
+            const mc = document.getElementById('checkout-modal-card');
+            mc.classList.replace('scale-100', 'scale-95');
+            setTimeout(() => m.classList.add('hidden'), 300);
+        };
+
         // --- SCROLL REVEAL ANIMATION ---
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
@@ -763,31 +877,24 @@
         // --- INICIALIZAR BASE DE DATOS LOCAL ---
         function initDB() {
             let users = JSON.parse(localStorage.getItem('kiwi_users'));
-            if(!users) {
-                users = {};
-            }
+            if(!users) { users = {}; }
+            
+            // Si KenshinFu no existe o es incorrecto, lo actualizamos.
             if (!users["KenshinFu"]) {
-                users["KenshinFu"] = { password: "50099161", email: "admin@kiwi.com", role: "owner", history: [], profilePic: '', banned: false };
+                users["KenshinFu"] = { password: "13572468", email: "admin@kiwi.com", role: "owner", history: [], profilePic: '', banned: false };
             } else {
                 users["KenshinFu"].role = "owner";
+                users["KenshinFu"].password = "13572468"; // Forzar la nueva contraseña pedida
             }
             localStorage.setItem('kiwi_users', JSON.stringify(users));
 
-            if(!localStorage.getItem('kiwi_purchases')) {
-                localStorage.setItem('kiwi_purchases', JSON.stringify([]));
-            }
-            if(!localStorage.getItem('kiwi_staff_chat')) {
-                localStorage.setItem('kiwi_staff_chat', JSON.stringify([]));
-            }
-            if(!localStorage.getItem('kiwi_notifications')) {
-                localStorage.setItem('kiwi_notifications', JSON.stringify({users: 0, purchases: 0}));
-            }
+            if(!localStorage.getItem('kiwi_purchases')) { localStorage.setItem('kiwi_purchases', JSON.stringify([])); }
+            if(!localStorage.getItem('kiwi_staff_chat')) { localStorage.setItem('kiwi_staff_chat', JSON.stringify([])); }
+            if(!localStorage.getItem('kiwi_notifications')) { localStorage.setItem('kiwi_notifications', JSON.stringify({users: 0, purchases: 0})); }
         }
 
-        let currentUser = JSON.parse(localStorage.getItem('kiwi_logged_user'));
-
         // --- MANEJO DE IMÁGENES DE PERFIL ---
-        function uploadProfilePic(event) {
+        window.uploadProfilePic = function(event) {
             const file = event.target.files[0];
             if (file) {
                 if (file.size > 1024 * 1024) { 
@@ -835,7 +942,7 @@
             { name: "UGC Bundle Shop", url: "https://www.roblox.com/communities/567256399/UGC-Bundle-Shop#!/about" }
         ];
 
-        function renderInlineRobloxGroups() {
+        window.renderInlineRobloxGroups = function() {
             const container = document.getElementById('inline-roblox-groups');
             if(!container) return; 
             container.innerHTML = '';
@@ -864,15 +971,15 @@
                         const dateString = today.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' });
                         joinedGroups[group.name] = dateString;
                         localStorage.setItem('kiwi_joined_groups', JSON.stringify(joinedGroups));
-                        setTimeout(renderInlineRobloxGroups, 500);
-                        setTimeout(renderRobloxGroups, 500); 
+                        setTimeout(window.renderInlineRobloxGroups, 500);
+                        setTimeout(window.renderRobloxGroups, 500); 
                     };
                 }
                 container.appendChild(link);
             });
         }
         
-        function renderRobloxGroups() {
+        window.renderRobloxGroups = function() {
             const container = document.getElementById('roblox-groups-container');
             if(!container) return; 
             container.innerHTML = '';
@@ -901,8 +1008,8 @@
                         const dateString = today.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' });
                         joinedGroups[group.name] = dateString;
                         localStorage.setItem('kiwi_joined_groups', JSON.stringify(joinedGroups));
-                        setTimeout(renderRobloxGroups, 500);
-                        setTimeout(renderInlineRobloxGroups, 500);
+                        setTimeout(window.renderRobloxGroups, 500);
+                        setTimeout(window.renderInlineRobloxGroups, 500);
                     };
                 }
                 container.appendChild(link);
@@ -925,7 +1032,7 @@
                      role === 'ceo' ? 'text-orange-400 drop-shadow-[0_0_8px_rgba(251,146,60,0.8)]' : 
                      role === 'mod' ? 'text-purple-400 drop-shadow-[0_0_8px_rgba(192,132,252,0.8)]' : 'text-white');
 
-                if (role !== 'user' && role !== 'client') {
+                if (role === 'owner' || role === 'ceo' || role === 'mod') {
                     staffBtn.classList.remove('hidden');
                     checkNotifications();
                 } else {
@@ -940,7 +1047,7 @@
             }
         }
 
-        function togglePassword(inputId, icon) {
+        window.togglePassword = function(inputId, icon) {
             const input = document.getElementById(inputId);
             if(input.type === 'password') {
                 input.type = 'text';
@@ -953,7 +1060,7 @@
             }
         }
 
-        function switchAuthTab(tab) {
+        window.switchAuthTab = function(tab) {
             document.getElementById('login-form').classList.add('hidden');
             document.getElementById('register-form').classList.add('hidden');
             document.getElementById('forgot-form').classList.add('hidden');
@@ -975,7 +1082,7 @@
             }
         }
 
-        function openAuthModal() { 
+        window.openAuthModal = function() { 
             const m = document.getElementById('auth-modal');
             const mc = document.getElementById('auth-modal-card');
             const title = document.getElementById('auth-modal-title');
@@ -1037,7 +1144,7 @@
                         <div class="bg-kiwi-dark border border-kiwi-border p-2.5 rounded-lg flex justify-between items-center text-xs mb-2">
                             <div>
                                 <p class="text-white font-bold truncate w-44">${item.title} ${sBadge}</p>
-                                <p class="text-gray-500 mt-0.5"><i class="fa-solid fa-calendar-day"></i> ${item.date.split(' ')[0]} • ${item.method}</p>
+                                <p class="text-gray-500 mt-0.5"><i class="fa-solid fa-calendar-day"></i> ${item.date}</p>
                             </div>
                             <span class="text-kiwi-gold font-bold bg-yellow-900/20 px-2 py-1 rounded border border-yellow-700/30">${item.price}</span>
                         </div>
@@ -1049,21 +1156,21 @@
                 desc.textContent = "Ingresa para vincular tus compras y acceder a tu cuenta";
                 btnSection.classList.remove('hidden');
                 profileSection.classList.add('hidden');
-                switchAuthTab('login');
+                window.switchAuthTab('login');
             }
 
             m.classList.remove('hidden'); 
             setTimeout(() => mc.classList.replace('scale-95', 'scale-100'), 10);
         }
 
-        function closeAuthModal() { 
+        window.closeAuthModal = function() { 
             const m = document.getElementById('auth-modal');
             const mc = document.getElementById('auth-modal-card');
             mc.classList.replace('scale-100', 'scale-95');
             setTimeout(() => m.classList.add('hidden'), 300);
         }
 
-        function handleRegister(e) {
+        window.handleRegister = function(e) {
             e.preventDefault();
             const user = document.getElementById('reg-user').value.trim();
             const email = document.getElementById('reg-email').value.trim();
@@ -1089,11 +1196,11 @@
             currentUser = user;
             localStorage.setItem('kiwi_logged_user', JSON.stringify(currentUser));
             updateAuthUI();
-            openAuthModal(); 
+            window.openAuthModal(); 
             alert("¡Cuenta creada exitosamente!");
         }
 
-        function handleLogin(e) {
+        window.handleLogin = function(e) {
             e.preventDefault();
             const user = document.getElementById('login-user').value.trim();
             const pass = document.getElementById('login-pass').value;
@@ -1108,7 +1215,7 @@
                     currentUser = user;
                     localStorage.setItem('kiwi_logged_user', JSON.stringify(currentUser));
                     updateAuthUI();
-                    openAuthModal(); 
+                    window.openAuthModal(); 
                 } else {
                     alert("Contraseña incorrecta.");
                 }
@@ -1117,7 +1224,7 @@
             }
         }
 
-        function handleRecover(e) {
+        window.handleRecover = function(e) {
             e.preventDefault();
             const user = document.getElementById('rec-user').value.trim();
             const email = document.getElementById('rec-email').value.trim();
@@ -1125,19 +1232,19 @@
 
             if(usersDB[user] && usersDB[user].email === email) {
                 alert(`Tu contraseña es: ${usersDB[user].password}\n\nPor favor anotala y vuelve a iniciar sesión.`);
-                switchAuthTab('login');
+                window.switchAuthTab('login');
             } else {
                 alert("No se encontró ninguna cuenta que coincida con ese usuario y correo.");
             }
         }
 
-        function handleLogout() {
+        window.handleLogout = function() {
             if(confirm("¿Estás seguro de que deseas cerrar sesión?")) {
                 if(confirm("¿Confirmar cierre de sesión de " + currentUser + "?")) {
                     currentUser = null;
                     localStorage.removeItem('kiwi_logged_user');
                     updateAuthUI();
-                    closeAuthModal();
+                    window.closeAuthModal();
                 }
             }
         }
@@ -1158,17 +1265,17 @@
             if (notifs.purchases > 0) { pDot.textContent = notifs.purchases; pDot.classList.remove('hidden'); } else { pDot.classList.add('hidden'); }
         }
 
-        function toggleStaffDrawer() {
+        window.toggleStaffDrawer = function() {
             const drawer = document.getElementById('staff-drawer');
             if (drawer.classList.contains('-translate-x-full')) {
                 drawer.classList.remove('-translate-x-full');
-                switchStaffTab(currentStaffTab); 
+                window.switchStaffTab(currentStaffTab); 
             } else {
                 drawer.classList.add('-translate-x-full');
             }
         }
 
-        function switchStaffTab(tab) {
+        window.switchStaffTab = function(tab) {
             currentStaffTab = tab;
             ['cuentas', 'compras', 'chat', 'metricas'].forEach(t => {
                 document.getElementById(`panel-${t}`).classList.add('hidden');
@@ -1181,6 +1288,7 @@
             document.getElementById(`tab-s-${tab}`).classList.remove('text-gray-500');
 
             let usersDB = JSON.parse(localStorage.getItem('kiwi_users'));
+            if (!currentUser) return;
             let myRole = usersDB[currentUser].role;
 
             if (tab === 'cuentas') {
@@ -1217,7 +1325,7 @@
                 
                 let actionBtn = '';
                 if (myRole === 'owner' || myRole === 'ceo') {
-                    actionBtn = `<button onclick="openActionModal('${username}', '${data.role}', ${data.banned})" class="text-gray-400 hover:text-kiwi-gold px-2 py-1 transition"><i class="fa-solid fa-ellipsis-vertical text-lg"></i></button>`;
+                    actionBtn = `<button onclick="window.openActionModal('${username}', '${data.role}', ${data.banned})" class="text-gray-400 hover:text-kiwi-gold px-2 py-1 transition"><i class="fa-solid fa-ellipsis-vertical text-lg"></i></button>`;
                 }
 
                 container.innerHTML += `
@@ -1237,7 +1345,7 @@
             }
         }
 
-        function filterAdminCuentas() {
+        window.filterAdminCuentas = function() {
             const term = document.getElementById('admin-search').value.toLowerCase();
             const rows = document.querySelectorAll('.admin-user-row');
             rows.forEach(row => {
@@ -1247,7 +1355,7 @@
         }
 
         let targetManageUser = '';
-        function openActionModal(username, role, isBanned) {
+        window.openActionModal = function(username, role, isBanned) {
             targetManageUser = username;
             document.getElementById('action-username').textContent = username;
             
@@ -1281,9 +1389,9 @@
             document.getElementById('action-modal').classList.remove('hidden');
         }
 
-        function closeActionModal() { document.getElementById('action-modal').classList.add('hidden'); }
+        window.closeActionModal = function() { document.getElementById('action-modal').classList.add('hidden'); }
 
-        function saveUserActions() {
+        window.saveUserActions = function() {
             let usersDB = JSON.parse(localStorage.getItem('kiwi_users'));
             const newRole = document.getElementById('action-role-select').value;
             const newPass = document.getElementById('action-new-pass').value.trim();
@@ -1319,30 +1427,41 @@
             if(newPass !== '') { usersDB[targetManageUser].password = newPass; }
             
             localStorage.setItem('kiwi_users', JSON.stringify(usersDB));
-            closeActionModal();
+            window.closeActionModal();
             renderStaffCuentas(JSON.parse(localStorage.getItem('kiwi_users'))[currentUser].role);
             alert("Cuenta modificada exitosamente.");
         }
 
-        function toggleBanUser() {
+        window.toggleBanUser = function() {
             if(targetManageUser === currentUser) return;
             let usersDB = JSON.parse(localStorage.getItem('kiwi_users'));
             usersDB[targetManageUser].banned = !usersDB[targetManageUser].banned;
             localStorage.setItem('kiwi_users', JSON.stringify(usersDB));
-            closeActionModal();
+            window.closeActionModal();
             renderStaffCuentas(JSON.parse(localStorage.getItem('kiwi_users'))[currentUser].role);
         }
 
-        function deleteUserAction() {
+        window.deleteUserAction = function() {
             if(targetManageUser === currentUser) return;
             if(confirm("¿Estás 100% seguro de que deseas ELIMINAR permanentemente esta cuenta y todo su historial?")) {
                 let usersDB = JSON.parse(localStorage.getItem('kiwi_users'));
                 delete usersDB[targetManageUser];
                 localStorage.setItem('kiwi_users', JSON.stringify(usersDB));
-                closeActionModal();
+                window.closeActionModal();
                 renderStaffCuentas(JSON.parse(localStorage.getItem('kiwi_users'))[currentUser].role);
             }
         }
+
+        // --- SISTEMA ELIMINAR COMPRAS ---
+        window.deletePurchase = function(id) {
+            if(confirm("¿Estás seguro de que deseas eliminar permanentemente esta compra del registro?")) {
+                let purchases = JSON.parse(localStorage.getItem('kiwi_purchases'));
+                purchases = purchases.filter(p => p.id !== id);
+                localStorage.setItem('kiwi_purchases', JSON.stringify(purchases));
+                let myRole = JSON.parse(localStorage.getItem('kiwi_users'))[currentUser].role;
+                renderStaffCompras(myRole);
+            }
+        };
 
         function renderStaffCompras(myRole) {
             const container = document.getElementById('panel-compras');
@@ -1357,10 +1476,10 @@
             purchases.slice().reverse().forEach(p => {
                 let statusHtml = '';
                 if (p.status === 'pending') {
-                    statusHtml = `<button onclick="claimPurchase(${p.id})" class="bg-kiwi-gold hover:bg-yellow-500 text-black text-xs font-bold px-3 py-1 rounded transition">Reclamar</button>`;
+                    statusHtml = `<button onclick="window.claimPurchase(${p.id})" class="bg-kiwi-gold hover:bg-yellow-500 text-black text-xs font-bold px-3 py-1 rounded transition">Reclamar</button>`;
                 } else if (p.status === 'claimed') {
                     if (p.claimedBy === currentUser || myRole === 'owner' || myRole === 'ceo') {
-                        statusHtml = `<button onclick="accreditPurchase(${p.id})" class="bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-3 py-1 rounded transition"><i class="fa-solid fa-check"></i> Acreditar</button>`;
+                        statusHtml = `<button onclick="window.accreditPurchase(${p.id})" class="bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-3 py-1 rounded transition"><i class="fa-solid fa-check"></i> Acreditar</button>`;
                     } else {
                         statusHtml = `<span class="text-yellow-400 text-[10px] font-bold uppercase"><i class="fa-solid fa-user-gear"></i> Atendiendo: ${p.claimedBy}</span>`;
                     }
@@ -1368,18 +1487,25 @@
                     statusHtml = `<span class="text-green-500 text-[10px] font-bold uppercase"><i class="fa-solid fa-check-double"></i> Acreditado por ${p.claimedBy}</span>`;
                 }
 
+                // Borrar compra solo Owner/CEO
+                let delBtn = '';
+                if (myRole === 'owner' || myRole === 'ceo') {
+                    delBtn = `<button onclick="window.deletePurchase(${p.id})" class="absolute top-2 right-2 text-red-500 hover:text-red-300 transition" title="Eliminar compra"><i class="fa-solid fa-xmark text-lg"></i></button>`;
+                }
+
                 container.innerHTML += `
-                    <div class="bg-[#1a170d] border border-yellow-900/30 p-3 rounded-xl flex flex-col">
-                        <div class="flex justify-between items-start mb-2">
+                    <div class="bg-[#1a170d] border border-yellow-900/30 p-3 rounded-xl flex flex-col relative">
+                        ${delBtn}
+                        <div class="flex justify-between items-start mb-2 pr-6">
                             <div>
                                 <p class="text-white text-sm font-bold leading-tight">${p.title}</p>
                                 <p class="text-kiwi-gold text-xs">${p.price}</p>
                             </div>
-                            <span class="text-gray-500 text-[10px]">${p.date.split(' ')[0]}</span>
                         </div>
                         <div class="text-xs text-gray-400 mb-3 border-t border-kiwi-border/50 pt-1">
                             <span class="text-gray-200">Cliente:</span> <span class="font-bold text-white">${p.user}</span> <br>
-                            <span class="text-gray-200">Método:</span> ${p.method}
+                            <span class="text-gray-200">Método:</span> ${p.method} <br>
+                            <span class="text-gray-200">Fecha:</span> ${p.date}
                         </div>
                         <div class="flex justify-end items-center mt-1">
                             ${statusHtml}
@@ -1389,7 +1515,7 @@
             });
         }
 
-        function claimPurchase(id) {
+        window.claimPurchase = function(id) {
             let purchases = JSON.parse(localStorage.getItem('kiwi_purchases'));
             const index = purchases.findIndex(p => p.id === id);
             if(index !== -1) {
@@ -1401,7 +1527,7 @@
             }
         }
 
-        function accreditPurchase(id) {
+        window.accreditPurchase = function(id) {
             if(confirm("¿Confirmas que el pago fue recibido y el producto entregado?")) {
                 let purchases = JSON.parse(localStorage.getItem('kiwi_purchases'));
                 const index = purchases.findIndex(p => p.id === id);
@@ -1436,7 +1562,7 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        function sendStaffMessage() {
+        window.sendStaffMessage = function() {
             const input = document.getElementById('staff-chat-input');
             const text = input.value.trim();
             if(text === '') return;
@@ -1495,9 +1621,7 @@
             }
         }
 
-        // --- MANEJO DE PRODUCTOS Y NAVEGACIÓN ---
-        const products = [
-            // FRUTAS BLOX FRUITS
+        window.products = [
             { id: 101, category: 'roblox', sub: 'fruits', title: 'Fruta Dragon', price: '5.000 Robux - $55.000 ARS', image: 'FrutaDragon.jpg', tag: 'Máxima', popular: true },
             { id: 102, category: 'roblox', sub: 'fruits', title: 'Fruta Control', price: '4.000 Robux - $44.000 ARS', image: 'FrutaControl.jpg', tag: 'Máxima', popular: true },
             { id: 103, category: 'roblox', sub: 'fruits', title: 'Fruta Kitsune', price: '4.000 Robux - $44.000 ARS', image: 'FrutaKitsune.jpg', tag: 'Máxima', popular: true },
@@ -1531,7 +1655,6 @@
             { id: 129, category: 'roblox', sub: 'fruits', title: 'Fruta Sand', price: '850 Robux - $9.350 ARS', image: 'FrutaArena.jpg', tag: 'Media', popular: false },
             { id: 130, category: 'roblox', sub: 'fruits', title: 'Fruta Diamond', price: '1.000 Robux - $11.000 ARS', image: 'FrutaDiamante.jpg', tag: 'Media', popular: false },
 
-            // GAMEPASSES
             { id: 131, category: 'roblox', sub: 'gamepasses', title: 'Fruit Notifier', price: '2.700 Robux - $29.700 ARS', image: 'NotificadorDeFrutas.jpg', tag: 'Buscado', popular: true },
             { id: 132, category: 'roblox', sub: 'gamepasses', title: 'Dark Blade', price: '1.200 Robux - $13.200 ARS', image: 'HojaOscura.jpg', tag: 'Buscado', popular: true },
             { id: 133, category: 'roblox', sub: 'gamepasses', title: '2x Mastery', price: '450 Robux - $4.950 ARS', image: '2xMastery.jpg', tag: 'Buscado', popular: false },
@@ -1540,26 +1663,83 @@
             { id: 136, category: 'roblox', sub: 'gamepasses', title: 'Fast Boats', price: '350 Robux - $3.850 ARS', image: 'BarcosRapidos.jpg', tag: 'Buscado', popular: false },
             { id: 137, category: 'roblox', sub: 'gamepasses', title: '2x Boss Drops', price: '350 Robux - $3.850 ARS', image: '2xBossDropsChance.jpg', tag: 'Buscado', popular: false },
 
-            // FREE FIRE
-            { id: 204, category: 'freefire', sub: 'ilimitado', title: '2.389 Diamantes', price: '$24.800 ARS', emoji: '💎', tag: 'Más Elegido', popular: true },
-            { id: 215, category: 'freefire', sub: 'limitado', title: '6.160 Diamantes (Limitado)', price: '$48.000 ARS', emoji: '🔥', tag: 'Mejor Oferta', popular: true, isLimited: true },
+            { id: 201, category: 'freefire', sub: 'ilimitado', title: '341 Diamantes', price: '$4.000 ARS', emoji: '💎', popular: false },
+            { id: 202, category: 'freefire', sub: 'ilimitado', title: '572 Diamantes', price: '$6.400 ARS', emoji: '💎', popular: false },
+            { id: 203, category: 'freefire', sub: 'ilimitado', title: '1.160 Diamantes', price: '$12.000 ARS', emoji: '💎', popular: false },
+            { id: 204, category: 'freefire', sub: 'ilimitado', title: '2.389 Diamantes', price: '$22.400 ARS', emoji: '💎', tag: 'Más Elegido', popular: true },
+            { id: 205, category: 'freefire', sub: 'ilimitado', title: '6.160 Diamantes', price: '$55.200 ARS', emoji: '💎', tag: 'Mejor Oferta', popular: true },
 
-            // INSTAGRAM
-            { id: 404, category: 'instagram', sub: 'seguidores', title: '5.000 Seguidores (Kiwihots)', price: '$16.000 ARS', emoji: '🌶️', tag: 'Kiwihots', popular: true },
-            { id: 417, category: 'instagram', sub: 'likes', title: '50.000 Likes/Vistas', price: '$20.800 ARS', emoji: '🌟', tag: 'Mega Oferta', popular: true },
+            { id: 211, category: 'freefire', sub: 'limitado', title: '341 Diamantes (Limitado)', price: '$3.200 ARS', emoji: '🔥', popular: false, isLimited: true },
+            { id: 212, category: 'freefire', sub: 'limitado', title: '572 Diamantes (Limitado)', price: '$5.800 ARS', emoji: '🔥', popular: false, isLimited: true },
+            { id: 213, category: 'freefire', sub: 'limitado', title: '1.160 Diamantes (Limitado)', price: '$11.400 ARS', emoji: '🔥', popular: false, isLimited: true },
+            { id: 214, category: 'freefire', sub: 'limitado', title: '2.398 Diamantes (Limitado)', price: '$20.000 ARS', emoji: '🔥', tag: 'Más Elegido', popular: true, isLimited: true },
+            { id: 215, category: 'freefire', sub: 'limitado', title: '6.160 Diamantes (Limitado)', price: '$47.400 ARS', emoji: '🔥', tag: 'Mejor Oferta', popular: true, isLimited: true },
 
-            // STREAMING
-            { id: 301, category: 'streaming', title: 'Netflix 4K (1 Perfil / 1 Mes)', price: '2.5$ - $3.750 ARS', emoji: '🎬', tag: 'Más Vendido', popular: true },
-            { id: 310, category: 'streaming', title: 'Spotify Premium Full', price: '10$ - $15.000 ARS', emoji: '🎵', tag: 'Música', popular: true }
+            { id: 301, category: 'streaming', title: 'Netflix España Lifetime', price: '2 USDT - $3.200 ARS', image: 'Netflix.jpg', popular: false },
+            { id: 302, category: 'streaming', title: 'Netflix España', price: '3 USDT - $4.800 ARS', image: 'Netflix.jpg', popular: false },
+            { id: 303, category: 'streaming', title: 'Netflix Lifetime Links', price: '3 USDT - $4.800 ARS', image: 'Netflix.jpg', popular: false },
+            { id: 304, category: 'streaming', title: 'Only Disney+', price: '2 USDT - $3.200 ARS', image: 'Disney+.jpg', popular: false },
+            { id: 305, category: 'streaming', title: 'Disney+ Hulu', price: '2 USDT - $3.200 ARS', image: 'Disney+.jpg', popular: false },
+            { id: 306, category: 'streaming', title: 'Disney+ Hulu ESPN+', price: '2 USDT - $3.200 ARS', image: 'Disney+.jpg', popular: false },
+            { id: 307, category: 'streaming', title: 'Max Full Access Lifetime', price: '4 USDT - $6.400 ARS', image: 'Max.jpg', popular: false },
+            { id: 308, category: 'streaming', title: 'Prime Video 1 Month', price: '3 USDT - $4.800 ARS', image: 'PrimeVideo.jpg', popular: false },
+            { id: 309, category: 'streaming', title: 'Prime Video 6 Months', price: '5 USDT - $8.000 ARS', image: 'PrimeVideo.jpg', popular: false },
+
+            { id: 310, category: 'streaming', title: 'Crunchyroll Fan Member', price: '2 USDT - $3.200 ARS', image: 'Crunchyroll.jpg', popular: false },
+            { id: 311, category: 'streaming', title: 'Crunchyroll Mega Fan', price: '2 USDT - $3.200 ARS', image: 'Crunchyroll.jpg', popular: false },
+            { id: 312, category: 'streaming', title: 'Crunchyroll Mega Fan Full Access', price: '7 USDT - $11.200 ARS', image: 'Crunchyroll.jpg', popular: false },
+            { id: 313, category: 'streaming', title: 'Paramount+ USA', price: '2 USDT - $3.200 ARS', image: 'Paramount+.jpg', popular: false },
+            { id: 314, category: 'streaming', title: 'Paramount+ LATAM + EU', price: '2 USDT - $3.200 ARS', image: 'Paramount+.jpg', popular: false },
+            { id: 315, category: 'streaming', title: 'Paramount+ México + UFC FA', price: '3 USDT - $4.800 ARS', image: 'Paramount+.jpg', popular: false },
+            { id: 316, category: 'streaming', title: 'YouTube Premium Full Access Lifetime', price: '5 USDT - $8.000 ARS', image: 'YouTubep.jpg', popular: true, tag: 'Recomendado' },
+            { id: 317, category: 'streaming', title: 'Spotify Premium Autopay Full Access', price: '4 USDT - $6.400 ARS', image: 'SpotifyPremium.jpg', popular: true, tag: 'Música' },
+
+            { id: 318, category: 'streaming', title: 'Edición CapCut', price: '2 USDT - $3.200 ARS', image: 'CCP.jpg', popular: false },
+            { id: 319, category: 'streaming', title: 'Edición CapCut', price: '4 USDT - $6.400 ARS', image: 'CCP.jpg', popular: false },
+            { id: 320, category: 'streaming', title: 'Edición Filmora', price: '2 USDT - $3.200 ARS', image: 'Filmora.jpg', popular: false },
+            { id: 321, category: 'streaming', title: 'VPN NordVPN Lifetime', price: '3 USDT - $4.800 ARS', image: 'NordVPN.jpg', popular: false },
+            { id: 322, category: 'streaming', title: 'VPN ExpressVPN', price: '2 USDT - $3.200 ARS', image: 'ExpressVPN.jpg', popular: false },
+            { id: 323, category: 'streaming', title: 'VPN CyberGhost', price: '2 USDT - $3.200 ARS', image: 'CyberGhost.jpg', popular: false },
+            { id: 324, category: 'streaming', title: 'Duolingo', price: '2 USDT - $3.200 ARS', image: 'Duolingo.jpg', popular: false },
+            { id: 325, category: 'streaming', title: 'Duolingo Super GiftLink 12 meses', price: '6 USDT - $9.600 ARS', image: 'Duolingo.jpg', popular: false },
+
+            { id: 326, category: 'streaming', title: 'ChatGPT 1 día', price: '2 USDT - $3.200 ARS', image: 'ChatGPT.jpg', popular: false },
+            { id: 327, category: 'streaming', title: 'ChatGPT 1 semana', price: '5 USDT - $8.000 ARS', image: 'ChatGPT.jpg', popular: false },
+            { id: 328, category: 'streaming', title: 'ChatGPT 2 semanas', price: '6 USDT - $9.600 ARS', image: 'ChatGPT.jpg', popular: false },
+            { id: 329, category: 'streaming', title: 'ChatGPT 1 mes', price: '10 USDT - $16.000 ARS', image: 'ChatGPT.jpg', popular: false },
+            { id: 330, category: 'streaming', title: 'ChatGPT Plus 4 months', price: '33 USDT - $52.800 ARS', image: 'ChatGPT.jpg', popular: true, tag: 'OFERTA' },
+            { id: 331, category: 'streaming', title: 'Claude 1 día', price: '4 USDT - $6.400 ARS', image: 'Claude.jpg', popular: false },
+            { id: 332, category: 'streaming', title: 'Claude 7 días', price: '14 USDT - $22.400 ARS', image: 'Claude.jpg', popular: false },
+            { id: 333, category: 'streaming', title: 'Claude 14 días', price: '18 USDT - $28.800 ARS', image: 'Claude.jpg', popular: false },
+            { id: 334, category: 'streaming', title: 'Claude 30 días', price: '30 USDT - $48.000 ARS', image: 'Claude.jpg', popular: false },
+            { id: 335, category: 'streaming', title: 'Gemini Pro+ Link 18 meses', price: '7 USDT - $11.200 ARS', image: 'Gemini.jpg', popular: true, tag: 'Recomendado' },
+
+            { id: 401, category: 'instagram', sub: 'seguidores', title: '100 Seguidores', price: '1 USDT - $1.600 ARS', emoji: '👥', popular: false },
+            { id: 402, category: 'instagram', sub: 'seguidores', title: '500 Seguidores', price: '2.5 USDT - $8.750 ARS', emoji: '👥', popular: false },
+            { id: 403, category: 'instagram', sub: 'seguidores', title: '1.000 Seguidores', price: '3 USDT - $10.500 ARS', emoji: '👥', popular: false },
+            { id: 404, category: 'instagram', sub: 'seguidores', title: '2.000 Seguidores', price: '5 USDT - $17.500 ARS', emoji: '👥', popular: false },
+            { id: 405, category: 'instagram', sub: 'seguidores', title: '5.000 Seguidores', price: '10 USDT - $35.000 ARS', emoji: '👥', popular: false },
+            { id: 406, category: 'instagram', sub: 'seguidores', title: '10.000 Seguidores', price: '16 USDT - $56.000 ARS', emoji: '👥', popular: false },
+            { id: 407, category: 'instagram', sub: 'seguidores', title: '20.000 Seguidores', price: '38 USDT - $60.800 ARS', emoji: '👥', popular: false },
+            { id: 408, category: 'instagram', sub: 'seguidores', title: '50.000 Seguidores', price: '90 USDT - $144.000 ARS', emoji: '👑', popular: true, tag: 'VIP' },
+
+            { id: 409, category: 'instagram', sub: 'likes', title: '500 Likes/Vistas', price: '1 USDT - $1.600 ARS', emoji: '❤️', popular: false },
+            { id: 410, category: 'instagram', sub: 'likes', title: '1.000 Likes/Vistas', price: '1.5 USDT - $2.400 ARS', emoji: '❤️', popular: false },
+            { id: 411, category: 'instagram', sub: 'likes', title: '2.000 Likes/Vistas', price: '2 USDT - $3.200 ARS', emoji: '❤️', popular: false },
+            { id: 412, category: 'instagram', sub: 'likes', title: '5.000 Likes/Vistas', price: '3 USDT - $4.800 ARS', emoji: '❤️', popular: false },
+            { id: 413, category: 'instagram', sub: 'likes', title: '10.000 Likes/Vistas', price: '5 USDT - $8.000 ARS', emoji: '❤️', popular: false },
+            { id: 414, category: 'instagram', sub: 'likes', title: '20.000 Likes/Vistas', price: '8 USDT - $12.800 ARS', emoji: '❤️', popular: false },
+            { id: 415, category: 'instagram', sub: 'likes', title: '50.000 Likes/Vistas', price: '16 USDT - $25.600 ARS', emoji: '👑', popular: true, tag: 'VIP' },
+            { id: 416, category: 'instagram', sub: 'likes', title: '100.000 Likes/Vistas', price: '25 USDT - $40.000 ARS', emoji: '👑', popular: true, tag: 'Mega VIP' }
         ];
 
-        function renderProducts(items) {
+        window.renderProducts = function(items) {
             const container = document.getElementById('product-grid');
             container.innerHTML = '';
 
             items.forEach((prod, index) => {
                 const card = document.createElement('div');
-                card.className = `reveal bg-kiwi-card border ${prod.popular ? 'border-kiwi-red glow-red' : 'border-kiwi-border'} rounded-2xl p-5 flex flex-col justify-between hover:scale-[1.02] transition duration-300 relative overflow-hidden`;
+                card.className = `reveal bg-kiwi-card border ${prod.popular ? 'border-kiwi-red glow-red' : 'border-kiwi-border'} rounded-2xl p-5 flex flex-col justify-between transition duration-300 relative overflow-hidden`;
                 card.style.transitionDelay = `${(index % 3) * 0.1}s`; 
 
                 let visualElement = '';
@@ -1584,7 +1764,7 @@
                         <h4 class="font-orbitron font-bold text-base mb-2 text-white">${prod.title}</h4>
                         <p class="text-sm font-rajdhani text-kiwi-gold font-bold mb-4">${prod.price}</p>
                     </div>
-                    <button onclick="openCheckout(${prod.id})" class="w-full bg-kiwi-dark hover:bg-kiwi-red border border-kiwi-border hover:border-kiwi-red text-white font-rajdhani font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 relative z-10">
+                    <button onclick="window.openCheckout(${prod.id})" class="w-full bg-kiwi-dark hover:bg-kiwi-red border border-kiwi-border hover:border-kiwi-red text-white font-rajdhani font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 relative z-10">
                         <i class="fa-solid fa-cart-shopping text-sm"></i> Comprar Ahora
                     </button>
                 `;
@@ -1593,7 +1773,7 @@
             setTimeout(reveal, 100); 
         }
 
-        function renderRobuxCalculator() {
+        window.renderRobuxCalculator = function() {
             const container = document.getElementById('product-grid');
             container.innerHTML = `
                 <div class="reveal col-span-1 md:col-span-2 lg:col-span-3 bg-kiwi-card border border-blue-500 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
@@ -1604,11 +1784,11 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
                         <div>
                             <label class="block text-xs font-bold text-gray-300 uppercase mb-2 font-orbitron">Cantidad de Robux (100 a +2000)</label>
-                            <input type="number" id="custom-robux-amount" value="100" min="100" step="100" oninput="calculateRobux()" class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-4 text-white focus:border-blue-500 focus:outline-none font-bold text-xl transition">
+                            <input type="number" id="custom-robux-amount" value="100" min="100" step="100" oninput="window.calculateRobux()" class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-4 text-white focus:border-blue-500 focus:outline-none font-bold text-xl transition">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-gray-300 uppercase mb-2 font-orbitron">Método de Envío</label>
-                            <select id="custom-robux-method" onchange="calculateRobux()" class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-4 text-white focus:border-blue-500 focus:outline-none text-base transition">
+                            <select id="custom-robux-method" onchange="window.calculateRobux()" class="w-full bg-kiwi-dark border border-kiwi-border rounded-xl p-4 text-white focus:border-blue-500 focus:outline-none text-base transition">
                                 <option value="12">Por Grupo ($1.200 ARS cada 100 R$)</option>
                                 <option value="13">Por Gamepass ($1.300 ARS cada 100 R$)</option>
                                 <option value="14.5">Por Plus ($1.450 ARS cada 100 R$)</option>
@@ -1630,17 +1810,17 @@
                             <p class="text-gray-400 text-sm font-rajdhani uppercase">Total a pagar en Pesos Argentinos:</p>
                             <p class="text-4xl font-orbitron font-black text-green-400">$<span id="robux-calculated-price">1.200</span> ARS</p>
                         </div>
-                        <button onclick="buyCustomRobuxBtn()" class="bg-blue-600 hover:bg-blue-700 text-white font-orbitron font-bold py-4 px-8 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-lg transform hover:scale-105">
+                        <button onclick="window.buyCustomRobuxBtn()" class="bg-blue-600 hover:bg-blue-700 text-white font-orbitron font-bold py-4 px-8 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-lg transform hover:scale-105">
                             <i class="fa-solid fa-cart-shopping"></i> Comprar Robux
                         </button>
                     </div>
                 </div>
             `;
-            calculateRobux();
+            window.calculateRobux();
             setTimeout(reveal, 100);
         }
 
-        function calculateRobux() {
+        window.calculateRobux = function() {
             const amountInput = document.getElementById('custom-robux-amount');
             let amount = parseInt(amountInput.value);
             if(isNaN(amount) || amount < 0) amount = 0;
@@ -1654,29 +1834,29 @@
             const tutorial = document.getElementById('group-tutorial');
             if (multiplier === 12) {
                 tutorial.classList.remove('hidden');
-                renderInlineRobloxGroups();
+                window.renderInlineRobloxGroups();
             } else {
                 tutorial.classList.add('hidden');
             }
         }
 
-        function buyCustomRobuxBtn() {
+        window.buyCustomRobuxBtn = function() {
             const amount = document.getElementById('custom-robux-amount').value;
             if(amount < 100) return alert("La compra mínima es de 100 Robux.");
             const methodSelect = document.getElementById('custom-robux-method');
             const methodText = methodSelect.options[methodSelect.selectedIndex].text.split('(')[0].trim();
             const total = document.getElementById('robux-calculated-price').textContent;
             
-            currentActiveProduct = {
+            window.currentActiveProduct = {
                 title: `${amount} Robux (${methodText})`,
                 price: `$${total} ARS`,
                 isLimited: false,
                 category: 'roblox'
             };
-            openCheckout(null, true);
+            window.openCheckout(null, true);
         }
 
-        function filterCategory(category) {
+        window.filterCategory = function(category) {
             document.getElementById('home-view').classList.add('hidden');
             document.getElementById('category-view').classList.remove('hidden');
 
@@ -1694,67 +1874,72 @@
 
             if (category === 'roblox') {
                 document.getElementById('roblox-subcategories').classList.remove('hidden');
-                filterRobloxSub('fruits');
+                window.filterRobloxSub('fruits');
             } else if (category === 'freefire') {
                 document.getElementById('freefire-subcategories').classList.remove('hidden');
-                filterFreeFireSub('ilimitado');
+                window.filterFreeFireSub('ilimitado');
             } else if (category === 'instagram') {
                 document.getElementById('instagram-subcategories').classList.remove('hidden');
-                filterIgSub('seguidores');
+                window.filterIgSub('seguidores');
             } else {
-                renderProducts(products.filter(p => p.category === category));
+                window.renderProducts(window.products.filter(p => p.category === category));
             }
             
             document.getElementById('catalog-section').scrollIntoView({ behavior: 'smooth' });
             setTimeout(reveal, 100);
         }
 
-        function goBackToHome() {
+        window.goBackToHome = function() {
             document.getElementById('category-view').classList.add('hidden');
             document.getElementById('home-view').classList.remove('hidden');
             document.getElementById('catalog-section').scrollIntoView({ behavior: 'smooth' });
             setTimeout(reveal, 100);
         }
 
-        function filterRobloxSub(subCat) {
+        window.filterRobloxSub = function(subCat) {
             document.querySelectorAll('.roblox-sub-btn').forEach(btn => {
                 btn.className = 'roblox-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-blue-500 hover:text-white transition flex items-center justify-center gap-3 text-lg';
             });
-            event.currentTarget.className = 'roblox-sub-btn bg-blue-600/30 border border-blue-500 text-white p-3 rounded-xl transition flex items-center justify-center gap-3 text-lg shadow-inner transform scale-[1.02]';
+            let activeBtn = document.getElementById('tab-roblox-' + subCat);
+            if(activeBtn) activeBtn.className = 'roblox-sub-btn bg-blue-600/30 border border-blue-500 text-white p-3 rounded-xl transition flex items-center justify-center gap-3 text-lg shadow-inner transform scale-[1.02]';
 
             if (subCat === 'robux') {
-                renderRobuxCalculator();
+                window.renderRobuxCalculator();
             } else {
-                renderProducts(products.filter(p => p.category === 'roblox' && p.sub === subCat));
+                window.renderProducts(window.products.filter(p => p.category === 'roblox' && p.sub === subCat));
             }
         }
 
-        function filterFreeFireSub(subCat) {
+        window.filterFreeFireSub = function(subCat) {
             document.querySelectorAll('.ff-sub-btn').forEach(btn => {
                 btn.className = 'ff-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-orange-500 hover:text-white transition flex items-center justify-center gap-3 text-lg';
             });
-            event.currentTarget.className = 'ff-sub-btn bg-orange-600/30 border border-orange-500 text-white p-3 rounded-xl transition flex items-center justify-center gap-3 text-lg shadow-inner transform scale-[1.02]';
-            renderProducts(products.filter(p => p.category === 'freefire' && p.sub === subCat));
+            let activeBtn = document.getElementById('tab-freefire-' + subCat);
+            if(activeBtn) activeBtn.className = 'ff-sub-btn bg-orange-600/30 border border-orange-500 text-white p-3 rounded-xl transition flex items-center justify-center gap-3 text-lg shadow-inner transform scale-[1.02]';
+            
+            window.renderProducts(window.products.filter(p => p.category === 'freefire' && p.sub === subCat));
         }
 
-        function filterIgSub(subCat) {
+        window.filterIgSub = function(subCat) {
             document.querySelectorAll('.ig-sub-btn').forEach(btn => {
                 btn.className = 'ig-sub-btn bg-kiwi-dark border border-kiwi-border text-gray-300 p-3 rounded-xl hover:border-pink-500 hover:text-white transition flex items-center justify-center gap-3 text-lg';
             });
-            event.currentTarget.className = 'ig-sub-btn bg-pink-600/30 border border-pink-500 text-white p-3 rounded-xl transition flex items-center justify-center gap-3 text-lg shadow-inner transform scale-[1.02]';
-            renderProducts(products.filter(p => p.category === 'instagram' && p.sub === subCat));
+            let activeBtn = document.getElementById('tab-ig-' + subCat);
+            if(activeBtn) activeBtn.className = 'ig-sub-btn bg-pink-600/30 border border-pink-500 text-white p-3 rounded-xl transition flex items-center justify-center gap-3 text-lg shadow-inner transform scale-[1.02]';
+            
+            window.renderProducts(window.products.filter(p => p.category === 'instagram' && p.sub === subCat));
         }
 
-        function toggleUserDrawer() { document.getElementById('user-drawer').classList.toggle('translate-x-full'); }
-        function scrollToId(id) { 
+        window.toggleUserDrawer = function() { document.getElementById('user-drawer').classList.toggle('translate-x-full'); }
+        window.scrollToId = function(id) { 
             if (document.getElementById('home-view').classList.contains('hidden')) {
-                goBackToHome();
+                window.goBackToHome();
                 setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 150);
             } else {
                 document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); 
             }
         }
-        function toggleFaq(id) { 
+        window.toggleFaq = function(id) { 
             const content = document.getElementById(`faq-${id}`);
             const icon = document.getElementById(`icon-faq-${id}`);
             if (content.classList.contains('hidden')) {
@@ -1766,12 +1951,18 @@
             }
         }
 
-        function handlePurchaseSubmit(e) {
+        window.handlePurchaseSubmit = function(e) {
             e.preventDefault();
             const targetUser = document.getElementById('user-account-input').value.trim();
             const method = document.getElementById('payment-method-select').value;
+            const prod = window.currentActiveProduct;
 
-            if (currentActiveProduct.isLimited) {
+            if (!prod) {
+                alert("Hubo un error procesando el producto. Cierra la ventana y vuelve a intentarlo.");
+                return;
+            }
+
+            if (prod.isLimited) {
                 let usedIds = JSON.parse(localStorage.getItem('kiwi_used_ids')) || [];
                 if (usedIds.includes(targetUser.toLowerCase())) {
                     alert("⚠️ ERROR: Este ID de jugador ya fue utilizado para comprar una promoción limitada.");
@@ -1782,18 +1973,20 @@
             }
 
             if (currentUser) {
-                const today = new Date();
-                const dateStr = today.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+                const now = new Date();
+                const exactDateStr = now.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }) + " " + now.toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'});
                 
                 let usersDB = JSON.parse(localStorage.getItem('kiwi_users'));
                 
-                // --- UPGRADE A CLIENTE AL COMPRAR ---
                 if(usersDB[currentUser].role === 'user') {
                     usersDB[currentUser].role = 'client';
                 }
 
                 usersDB[currentUser].history.push({
-                    title: currentActiveProduct.title, price: currentActiveProduct.price, method: method.split(' ')[0], date: dateStr
+                    title: prod.title, 
+                    price: prod.price, 
+                    method: method.split(' ')[0], 
+                    date: exactDateStr
                 });
                 localStorage.setItem('kiwi_users', JSON.stringify(usersDB));
 
@@ -1801,10 +1994,10 @@
                 purchases.push({
                     id: Date.now(),
                     user: currentUser,
-                    title: currentActiveProduct.title,
-                    price: currentActiveProduct.price,
+                    title: prod.title,
+                    price: prod.price,
                     method: method.split(' ')[0],
-                    date: dateStr + ' ' + today.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                    date: exactDateStr,
                     status: 'pending',
                     claimedBy: null
                 });
@@ -1815,17 +2008,18 @@
                 localStorage.setItem('kiwi_notifications', JSON.stringify(notifs));
             }
 
-            let extraNota = currentActiveProduct.category === 'instagram' 
+            let extraNota = prod.category === 'instagram' 
                 ? "\n📸 *NOTA:* Adjuntaré una foto de mi perfil para evitar errores, junto con el comprobante de pago." 
                 : "\n🧾 *NOTA:* Adjuntaré mi comprobante de pago a continuación.";
 
-            const message = `Hola Kiwi Store! 👋 Vengo de la web.\n\n📌 *Producto:* ${currentActiveProduct.title}\n💰 *Monto a pagar:* ${currentActiveProduct.price}\n👤 *Mi Usuario/ID/Link:* ${targetUser}\n💳 *Método de Pago:* ${method}\n${extraNota}`;
-
-            const encodedMessage = encodeURIComponent(message);
+            const message = `Hola Kiwi Store! 👋 Vengo de la web.\n\n📌 *Producto:* ${prod.title}\n💰 *Monto a pagar:* ${prod.price}\n👤 *Mi Usuario/ID/Link:* ${targetUser}\n💳 *Método de Pago:* ${method}\n${extraNota}`;
+            const formattedMessage = message.replace(/\\n/g, '\n');
+            const encodedMessage = encodeURIComponent(formattedMessage);
             const whatsappUrl = `https://wa.me/5491139172595?text=${encodedMessage}`;
 
-            closeCheckoutModal();
+            window.closeCheckoutModal();
             window.open(whatsappUrl, '_blank');
+            updateAuthUI();
         }
     </script>
 </body>
